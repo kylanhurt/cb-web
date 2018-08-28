@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import Scrollbar from 'react-smooth-scrollbar';
 import {withRouter} from 'react-router';
 import classNames from 'classnames';
-import SidebarContent from './SidebarContent';
+import { SidebarContentConnector } from './SidebarContent';
 import {changeMobileSidebarVisibility} from '../../../redux/actions/sidebarActions';
 
 class Sidebar extends PureComponent {
@@ -24,11 +24,11 @@ class Sidebar extends PureComponent {
         <div className='sidebar__back' onClick={this.changeMobileSidebarVisibility}/>
         <Scrollbar className='sidebar__scroll scroll'>
           <div className='sidebar__wrapper sidebar__wrapper--desktop'>
-            <SidebarContent onClick={() => {
+            <SidebarContentConnector onClick={() => {
             }}/>
           </div>
           <div className='sidebar__wrapper sidebar__wrapper--mobile'>
-            <SidebarContent onClick={this.changeMobileSidebarVisibility}/>
+            <SidebarContentConnector onClick={this.changeMobileSidebarVisibility}/>
           </div>
         </Scrollbar>
       </div>
