@@ -6,12 +6,12 @@ import MainWrapper from './MainWrapper';
 import LogIn from '../containers/log_in/LogIn';
 import ExamplePageOne from '../containers/example/ExamplePageOne';
 import ExamplePageTwo from '../containers/example_two/ExamplePageTwo';
+import { Homepage } from '../containers/homepage/Homepage.js';
 
 const Router = () => (
   <MainWrapper>
     <main>
       <Switch>
-        <Route exact path='/' component={LogIn}/>
         <Route exact path='/log_in' component={LogIn}/>
         <Route path='/' component={wrappedRoutes}/>
       </Switch>
@@ -30,6 +30,7 @@ const wrappedRoutes = () => (
 
 const Pages = () => (
   <Switch>
+    <Route exact path='/' component={Homepage}/>    
     <Route path='/pages/one' component={ExamplePageOne}/>
     <Route path='/pages/two' component={ExamplePageTwo}/>
   </Switch>
