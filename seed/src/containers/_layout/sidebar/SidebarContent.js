@@ -4,7 +4,7 @@ import SidebarLink from './SidebarLink';
 import SidebarCategory from './SidebarCategory';
 import {changeThemeToDark, changeThemeToLight} from '../../../redux/actions/themeActions';
 import { makeEdgeUiContext } from 'edge-login-ui-web'
-import { updateAccount, destroyAccount } from '../../../redux/actions/accountActions.js'
+import { logIn, logOut } from '../../../redux/actions/accountActions.js'
 
 let edgeContext // : EdgeUiContext 
 
@@ -19,33 +19,37 @@ makeEdgeUiContext({
 
 class SidebarContent extends PureComponent {
   changeToDark = () => {
-    this.props.dispatch(changeThemeToDark());
+    this.props.changeThemeToDark();
     this.hideSidebar();
   };
   
   changeToLight = () => {
-    this.props.dispatch(changeThemeToLight());
+    this.props.changeThemeToLight();
     this.hideSidebar();
   };
   
   openLogin = () => {
-    const { updateAccount } = this.props
+    const { logIn } = this.props
     if (edgeContext)
     edgeContext.openLoginWindow({
       onLogin(account) {
         console.log('account is: ', account)        
-        updateAccount(account)
+        logIn(account)    
       },
       onClose() {
         console.log('Closing window')
       } 
     })
   };
-  
+
+  hideSidebar = () => {
+    this.props.onClick();
+  };
+
   render() {
-    const { account, destroyAccount } = this.props
+    const { account, logOut } = this.props
     const accountOptionSyntax = account ? 'Log Out' : 'Log In'
-    const onPressAccount = account ? destroyAccount : this.openLogin
+    const onPressAccount = account ? logOut : this.openLogin
     return (
       <div className='sidebar__content'>
         <ul className='sidebar__block'>
@@ -75,8 +79,10 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  updateAccount: (account: any) => dispatch(updateAccount(account)),
-  destroyAccount: () => dispatch(destroyAccount())
+  logOut: () => dispatch(logOut()),
+  logIn: (account: any) => dispatch(logIn(account)),
+  changeThemeToDark: () => dispatch(changeThemeToDark()),
+  changeThemeToLight: () => dispatch(changeThemeToLight())
 })
 
 export const SidebarContentConnector = connect(mapStateToProps, mapDispatchToProps)(SidebarContent);
