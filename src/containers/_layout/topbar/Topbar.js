@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import {Link} from 'react-router-dom';
 import TopbarSidebarButton from './TopbarSidebarButton';
-import TopbarProfile from './TopbarProfile';
+import { TopbarProfileConnector } from './TopbarProfile';
 import TopbarMail from './TopbarMail';
 import TopbarNotification from './TopbarNotification';
 import TopbarSearch from './TopbarSearch';
@@ -17,7 +17,7 @@ export default class Topbar extends PureComponent {
             <TopbarSearch/>
             <TopbarNotification/>
             <TopbarMail new/>
-            <TopbarProfile/>
+            <TopbarProfileConnector/>
           </div>
         </div>
       </div>
