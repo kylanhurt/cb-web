@@ -6,7 +6,7 @@ import MainWrapper from './MainWrapper';
 import LogIn from '../containers/log_in/LogIn';
 import ExamplePageOne from '../containers/example/ExamplePageOne';
 import ExamplePageTwo from '../containers/example_two/ExamplePageTwo';
-import { Homepage } from '../containers/homepage/Homepage.js';
+import { HomepageConnector } from '../containers/homepage/Homepage.js';
 
 const Router = () => (
   <MainWrapper>
@@ -23,6 +23,7 @@ const wrappedRoutes = () => (
   <div>
     <Layout/>
     <div className='container__wrap'>
+      <Route exact path='/' component={HomepageConnector}/>    
       <Route path='/pages' component={Pages}/>
     </div>
   </div>
@@ -30,7 +31,7 @@ const wrappedRoutes = () => (
 
 const Pages = () => (
   <Switch>
-    <Route exact path='/' component={Homepage}/>    
+    <Route exact path='/' component={HomepageConnector}/>    
     <Route path='/pages/one' component={ExamplePageOne}/>
     <Route path='/pages/two' component={ExamplePageTwo}/>
   </Switch>
