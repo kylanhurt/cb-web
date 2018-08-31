@@ -1,83 +1,110 @@
-import React, {PureComponent} from 'react';
-import {connect} from 'react-redux';
-import { fetchTokenList } from '../../redux/actions/tokenActions.js'
-import {Col, Container, Row, Card, CardBody} from 'reactstrap';
+import React, {Component} from 'react'
+import {Col, Container, Row, Card, CardBody} from 'reactstrap'
+import { ellipsizeString } from '../../utils/utils.js'
 
-const data = [
-  {key: 'key1', value: 'value1'},
-  {key: 'key2', value: 'value2'}
-]
+export class HomepageComponent extends Component {
 
-class Homepage extends PureComponent {
-  constructor (props) {
-    super(props)
-    this.state = {
-      tokenToSell: '',
-      tokenToBuy: ''
-    }
-  }
   handleSubmit = () => {
     console.log('handling submit');
   }
 
-  onChangeSellToken = (event) => {
-    console.log('event.target is: ', event.target)
-    this.setState({
-      tokenToSell: event.target.value
-    })
-  }
-
-  onChangeBuyToken = (event) => {
-    console.log('event.target is: ', event.target)
-    this.setState({
-      tokenToBuy: event.target.value
-    })
-  }
-
   componentWillMount () {
     this.props.fetchTokenList()
+    this.props.fetchExchangeRates()
+  }
+
+  onChangeInputCurrencyCode = (event) => {
+    const { updateInputCurrencyCode } = this.props
+    updateInputCurrencyCode(event.target.value)
+  }
+
+  onChangeOutputCurrencyCode = (event) => {
+    const { updateOutputCurrencyCode } = this.props
+    updateOutputCurrencyCode(event.target.value)
   }
 
   render() {
-    const tokenDirectory = this.props.tokenDirectory
+    const {
+      tokenDirectory,
+      inputCurrencyCode,
+      outputCurrencyCode,
+    } = this.props
+
     return (
       <Container className='dashboard'>
         <Row>
-          <Col xs={12} md={12} lg={12} xl={6}>
+          <Col xs={12} md={12} lg={12} xl={12}>
             <h3 className='page-title'>Dashboard</h3>
           </Col>
         </Row>
         <Row>
           <Col xs={12} md={12} lg={12} xl={6}>
             <Card>
-              <CardBody>
+              <CardBody id='tradeCurrenciesForm'>
                 <div className='card__title'>
                   <h5 className='bold-text'>Choose trading pairs:</h5>
                 </div>
                 <form className='form form--horizontal' onSubmit={this.handleSubmit}>
-                  <div className='form__form-group'>
-                    <label className='form__form-group-label' htmlFor='sellToken'>Token to Sell:</label>
-                    <div className='form__form-group-field'>
-                      <select value={this.state.tokenToSell} onChange={this.onChangeSellToken} className='form-control' id='tokenToSell'>
+                  <div className='form__form-group form-row'>
+                    <div className='col-3 form__form-group-label-wrap'>
+                      <label className='form__form-group-label' htmlFor='inputCurrencyCode'>Token to Sell:</label>
+                    </div>
+                    <div className='col-7'>
+                      <select value={inputCurrencyCode} onChange={this.onChangeInputCurrencyCode} className='form-control'>
                         {tokenDirectory.map((token) => {
+                          const tokenCode = token.symbol.split(' ')
                           return (
-                            <option key={token.symbol} value={token.symbol}>{token.symbol}</option>
+                            <option key={token.symbol} value={token.symbol}>{tokenCode[0]} | {ellipsizeString(token.address, 20).toLowerCase()}</option>
                           )
                         })}
                       </select>
                     </div>
+                    <div className='col-2 form__form-group-label-wrap post'>
+                      <span className='form__form-group-label'>~ Test1</span>
+                    </div>                              
                   </div>
-                  <div className='form__form-group'>
-                    <label className='form__form-group-label' htmlFor='buyToken'>Token to Buy:</label>
-                    <div className='form__form-group-field'>
-                      <select value={this.state.tokenToBuy} onChange={this.onChangeBuyToken} className='form-control' id='tokenToBuy'>
+
+                  <div className='form__form-group form-row'>
+                    <div className='col-3 form__form-group-label-wrap'>
+                      <label className='form__form-group-label' htmlFor='inputCurrencyAmount'>Amount to Sell:</label>
+                    </div>
+                    <div className='col-7'>
+                      <input type='number' placeholde='0' />
+                    </div>
+                    <div className='col-2 form__form-group-label-wrap post'>
+                      <span className='form__form-group-label'>~ Test2</span>
+                    </div>                      
+                  </div>
+
+                  <div className='form__form-group form-row'>
+                    <div className='col-3 form__form-group-label-wrap'>
+                      <label className='form__form-group-label' htmlFor='outputCurrencyCode'>Token to Buy:</label>                    
+                    </div>
+                    <div className='col-7'>
+                      <select value={outputCurrencyCode} onChange={this.onChangeOutputCurrencyCode} className='form-control'>
                         {tokenDirectory.map((token) => {
+                          const tokenCode = token.symbol.split(' ')
                           return (
-                            <option key={token.symbol} value={token.symbol}>{token.symbol}</option>
+                            <option key={token.symbol} value={token.symbol}>{tokenCode[0]} | {ellipsizeString(token.address, 20).toLowerCase()}</option>
                           )
                         })}
                       </select>
                     </div>
+
+                    <div className='col-2 form__form-group-label-wrap post'>
+                      <span className='form__form-group-label'>~ Test</span>
+                    </div>      
+                  </div>
+                  <div className='form__form-group form-row'>
+                    <div className='col-3 form__form-group-label-wrap'>
+                      <label className='form__form-group-label' htmlFor='outputCurrencyAmount'>Amount to Sell:</label>
+                    </div>
+                    <div className='col-7'>
+                      <input type='number' placeholde='0' />
+                    </div>
+                    <div className='col-2 form__form-group-label-wrap post'>
+                      <span className='form__form-group-label'>~ Test2</span>
+                    </div>                      
                   </div>                  
                 </form>
               </CardBody>
@@ -88,17 +115,3 @@ class Homepage extends PureComponent {
     )
   }
 }
-
-const mapStateToProps = (state) => ({
-  tokenDirectory: state.tokens.tokensDirectory || []
-})
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    fetchTokenList: () => {
-      dispatch(fetchTokenList())
-    }
-  }
-}
-
-export const HomepageConnector = connect(mapStateToProps, mapDispatchToProps)(Homepage)

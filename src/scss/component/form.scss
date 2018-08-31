@@ -357,13 +357,26 @@
     }
 
     .form__form-group-label {
-      width: 80px;
+      width: auto;
       max-height: 32px;
       line-height: 18px;
-      margin: auto 0;
+      margin: auto auto;
 
       & + .form__form-group-field {
         margin-left: 0;
+      }
+    }
+
+    .form__form-group-label-wrap {
+      margin: auto auto;
+
+      &.post {
+        text-align: center;
+      }
+
+      span.form__form-group-label {
+        width: auto;
+        display: inline-block
       }
     }
 
@@ -386,7 +399,7 @@
     @media screen and (min-width: 480px){
 
       .form__form-group-label{
-        width: 120px;
+        width: auto;
       }
 
       .form__form-group-field{
