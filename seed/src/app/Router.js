@@ -6,7 +6,7 @@ import MainWrapper from './MainWrapper';
 import LogIn from '../containers/log_in/LogIn';
 import ExamplePageOne from '../containers/example/ExamplePageOne';
 import ExamplePageTwo from '../containers/example_two/ExamplePageTwo';
-import { HomepageConnector } from '../containers/homepage/Homepage.js';
+import { HomepageConnector } from '../redux/connectors/HomepageConnector.js';
 
 const Router = () => (
   <MainWrapper>
