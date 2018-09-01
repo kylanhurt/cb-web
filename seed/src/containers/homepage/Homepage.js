@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
+import { BigNumber } from '@0xproject/utils'
 import { Col, Container, Row, Card, CardBody } from 'reactstrap'
 import { ellipsizeString } from '../../utils/utils.js'
 import { getSymbolFromCurrency } from '../../constants/currencyConstants.js'
-import strings from '../../locales/default.js'
 
 export class HomepageComponent extends Component {
   constructor (props) {
@@ -23,6 +23,28 @@ export class HomepageComponent extends Component {
     updateInputCurrencyCode(event.target.value)
   }
 
+  onChangeInputAmount = (event) => {
+    const { inputCurrencyFiatRate } = this.props
+    const inputAmount = new BigNumber(event.target.value)
+    if (inputCurrencyFiatRate) {
+      const inputFiatAmountEstimate = inputAmount.mul(inputCurrencyFiatRate).toFixed(2).toString()
+      this.setState({
+        inputFiatAmountEstimate
+      })
+    }
+  }
+
+  onChangeOutputAmount = (event) => {
+    const { outputCurrencyFiatRate } = this.props
+    const outputAmount = new BigNumber(event.target.value)
+    if (outputCurrencyFiatRate) {
+      const outputFiatAmountEstimate = outputAmount.mul(outputCurrencyFiatRate).toFixed(2).toString()
+      this.setState({
+        outputFiatAmountEstimate
+      })
+    }
+  }
+
   onChangeOutputCurrencyCode = (event) => {
     const { updateOutputCurrencyCode } = this.props
     updateOutputCurrencyCode(event.target.value)
@@ -37,10 +59,13 @@ export class HomepageComponent extends Component {
       outputCurrencyFiatRate,
       isoFiatCurrencyCode
     } = this.props
+    const { inputFiatAmountEstimate, outputFiatAmountEstimate } = this.state
 
     const fiatCurrencySymbol = getSymbolFromCurrency(isoFiatCurrencyCode)
-    const inputCurrencyFiatRateSyntax = inputCurrencyFiatRate ? `~ ${fiatCurrencySymbol} ${inputCurrencyFiatRate}` : strings.not_applicable
-    const outputCurrencyFiatRateSyntax = outputCurrencyFiatRate ? `~ ${fiatCurrencySymbol} ${outputCurrencyFiatRate}` : strings.not_applicable
+    const inputCurrencyFiatRateSyntax = inputCurrencyFiatRate ? `~ ${fiatCurrencySymbol} ${inputCurrencyFiatRate}` : ''
+    const inputEstimate = inputFiatAmountEstimate ? `~ ${fiatCurrencySymbol} ${inputFiatAmountEstimate}` : ''
+    const outputCurrencyFiatRateSyntax = outputCurrencyFiatRate ? `~ ${fiatCurrencySymbol} ${outputCurrencyFiatRate}` : ''
+    const outputEstimate = outputFiatAmountEstimate ? `~ ${fiatCurrencySymbol} ${outputFiatAmountEstimate}` : ''
 
     return (
       <Container className='dashboard'>
@@ -82,10 +107,10 @@ export class HomepageComponent extends Component {
                       <label className='form__form-group-label' htmlFor='inputCurrencyAmount'>Amount to Sell:</label>
                     </div>
                     <div className='col-7'>
-                      <input type='number' placeholde='0' />
+                      <input type='number' placeholde='0' onChange={this.onChangeInputAmount} />
                     </div>
                     <div className='col-2 form__form-group-label-wrap post'>
-                      <span className='form__form-group-label'>~ Test2</span>
+                      <span className='form__form-group-label'>{inputEstimate}</span>
                     </div>
                   </div>
 
@@ -114,10 +139,10 @@ export class HomepageComponent extends Component {
                       <label className='form__form-group-label' htmlFor='outputCurrencyAmount'>Amount to Sell:</label>
                     </div>
                     <div className='col-7'>
-                      <input type='number' placeholde='0' />
+                      <input type='number' placeholde='0' onChange={this.onChangeOutputAmount} />
                     </div>
                     <div className='col-2 form__form-group-label-wrap post'>
-                      <span className='form__form-group-label'>~ Test2</span>
+                      <span className='form__form-group-label'>{outputEstimate}</span>
                     </div>
                   </div>
                 </form>
