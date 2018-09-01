@@ -1,7 +1,7 @@
 import {
   TOKENS_DIRECTORY
 } from '../actions/tokenActions.js'
-import { combineReducers } from 'redux';
+import { combineReducers } from 'redux'
 
 const initialState = {
   tokensDirectory: []

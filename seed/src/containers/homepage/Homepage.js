@@ -1,16 +1,15 @@
-import React, {Component} from 'react'
-import {Col, Container, Row, Card, CardBody} from 'reactstrap'
+import React, { Component } from 'react'
+import { Col, Container, Row, Card, CardBody } from 'reactstrap'
 import { ellipsizeString } from '../../utils/utils.js'
 
 export class HomepageComponent extends Component {
-
-  handleSubmit = () => {
-    console.log('handling submit');
-  }
-
-  componentWillMount () {
+  constructor (props) {
+    super(props)
     this.props.fetchTokenList()
     this.props.fetchExchangeRates()
+  }
+  handleSubmit = () => {
+    console.log('handling submit')
   }
 
   onChangeInputCurrencyCode = (event) => {
@@ -23,11 +22,11 @@ export class HomepageComponent extends Component {
     updateOutputCurrencyCode(event.target.value)
   }
 
-  render() {
+  render () {
     const {
       tokenDirectory,
       inputCurrencyCode,
-      outputCurrencyCode,
+      outputCurrencyCode
     } = this.props
 
     return (
@@ -61,7 +60,7 @@ export class HomepageComponent extends Component {
                     </div>
                     <div className='col-2 form__form-group-label-wrap post'>
                       <span className='form__form-group-label'>~ Test1</span>
-                    </div>                              
+                    </div>
                   </div>
 
                   <div className='form__form-group form-row'>
@@ -73,12 +72,12 @@ export class HomepageComponent extends Component {
                     </div>
                     <div className='col-2 form__form-group-label-wrap post'>
                       <span className='form__form-group-label'>~ Test2</span>
-                    </div>                      
+                    </div>
                   </div>
 
                   <div className='form__form-group form-row'>
                     <div className='col-3 form__form-group-label-wrap'>
-                      <label className='form__form-group-label' htmlFor='outputCurrencyCode'>Token to Buy:</label>                    
+                      <label className='form__form-group-label' htmlFor='outputCurrencyCode'>Token to Buy:</label>
                     </div>
                     <div className='col-7'>
                       <select value={outputCurrencyCode} onChange={this.onChangeOutputCurrencyCode} className='form-control'>
@@ -93,7 +92,7 @@ export class HomepageComponent extends Component {
 
                     <div className='col-2 form__form-group-label-wrap post'>
                       <span className='form__form-group-label'>~ Test</span>
-                    </div>      
+                    </div>
                   </div>
                   <div className='form__form-group form-row'>
                     <div className='col-3 form__form-group-label-wrap'>
@@ -104,8 +103,8 @@ export class HomepageComponent extends Component {
                     </div>
                     <div className='col-2 form__form-group-label-wrap post'>
                       <span className='form__form-group-label'>~ Test2</span>
-                    </div>                      
-                  </div>                  
+                    </div>
+                  </div>
                 </form>
               </CardBody>
             </Card>

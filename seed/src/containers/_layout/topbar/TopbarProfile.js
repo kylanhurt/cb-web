@@ -1,26 +1,26 @@
-import React, {PureComponent} from 'react';
-import {connect} from 'react-redux';
+import React, { PureComponent } from 'react'
+import { connect } from 'react-redux'
 
-import DownIcon from 'mdi-react/ChevronDownIcon';
-import TopbarMenuLink from './TopbarMenuLink';
-import {Collapse} from 'reactstrap';
+import DownIcon from 'mdi-react/ChevronDownIcon'
+import TopbarMenuLink from './TopbarMenuLink'
+import { Collapse } from 'reactstrap'
 
-const Ava = process.env.PUBLIC_URL + '/img/ava.png';
+const Ava = process.env.PUBLIC_URL + '/img/ava.png'
 
 class TopbarProfile extends PureComponent {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
       collapse: false
-    };
-    this.toggle = this.toggle.bind(this);
+    }
+    this.toggle = this.toggle.bind(this)
   }
 
-  toggle() {
-    this.setState({collapse: !this.state.collapse});
+  toggle () {
+    this.setState({ collapse: !this.state.collapse })
   }
 
-  render() {
+  render () {
     const { account } = this.props
     return (
       <div className='topbar__profile'>

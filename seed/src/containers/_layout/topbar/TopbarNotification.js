@@ -1,41 +1,24 @@
-import React, {PureComponent} from 'react';
-import {Collapse} from 'reactstrap';
-import {Link} from 'react-router-dom';
-import NotificationsIcon from 'mdi-react/NotificationsIcon';
+import React, { PureComponent } from 'react'
+import { Collapse } from 'reactstrap'
+import { Link } from 'react-router-dom'
+import NotificationsIcon from 'mdi-react/NotificationsIcon'
 
-const notifications = [
-  {
-    ava: process.env.PUBLIC_URL + '/img/topbar/ava.png',
-    name: 'Cristopher Changer', message: ' has started a new project', date: '09:02'
-  },
-  {
-    ava: process.env.PUBLIC_URL + '/img/topbar/ava2.png',
-    name: 'Sveta Narry', message: ' has closed a project', date: '09:00'
-  },
-  {
-    ava: process.env.PUBLIC_URL + '/img/topbar/ava3.png',
-    name: 'Lory McQueen', message: ' has started a new project as a Project Managert', date: '08:43'
-  },
-  {
-    ava: process.env.PUBLIC_URL + '/img/topbar/ava2.png',
-    name: 'Cristopher Changer', message: ' has closed a project', date: '08:43'
-  }
-];
+const notifications = []
 
 export default class TopbarNotification extends PureComponent {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
       collapse: false
-    };
-    this.toggle = this.toggle.bind(this);
+    }
+    this.toggle = this.toggle.bind(this)
   }
 
-  toggle() {
-    this.setState({collapse: !this.state.collapse});
+  toggle () {
+    this.setState({ collapse: !this.state.collapse })
   }
 
-  render() {
+  render () {
     return (
       <div className='topbar__collapse'>
         <button className='topbar__btn' onClick={this.toggle}>
@@ -50,15 +33,15 @@ export default class TopbarNotification extends PureComponent {
             <p className='topbar__collapse-title'>Notifications</p>
             <button className='topbar__collapse-button'>Mark all as read</button>
           </div>
-          {notifications.map((notification, index) => (
-            <div className='topbar__collapse-item' key={index}>
+          {notifications.map((notification) => (
+            <div className='topbar__collapse-item' key={notification.name}>
               <div className='topbar__collapse-img-wrap'>
                 <img className='topbar__collapse-img' src={notification.ava} alt=''/>
               </div>
               <p className='topbar__collapse-message'>
                 <span className='topbar__collapse-name'>{notification.name}</span>
                 {notification.message}
-                </p>
+              </p>
               <p className='topbar__collapse-date'>{notification.date}</p>
             </div>
           ))}

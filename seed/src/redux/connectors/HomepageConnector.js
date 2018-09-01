@@ -1,5 +1,5 @@
 
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import { fetchTokenList } from '../../redux/actions/tokenActions.js'
 import {
   updateInputCurrencyCode,
@@ -8,24 +8,16 @@ import {
 } from '../../redux/actions/exchangeActions'
 import { HomepageComponent } from '../../containers/homepage/Homepage.js'
 
-const mapStateToProps = (state: State) => ({
+const mapStateToProps = (state) => ({
   tokenDirectory: state.tokens.tokensDirectory || []
 })
 
-const mapDispatchToProps = (dispatch: Dispatch) => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    fetchTokenList: () => {
-      dispatch(fetchTokenList())
-    },
-    fetchExchangeRates: () => {
-      dispatch(fetchExchangeRates())
-    },
-    updateInputCurrencyCode: (currencyCode: string) => {
-      dispatch(updateInputCurrencyCode(currencyCode))
-    },
-    updateOutputCurrencyCode: (currencyCode: string) => {
-      dispatch(updateOutputCurrencyCode(currencyCode))
-    }
+    fetchTokenList: () => dispatch(fetchTokenList()),
+    fetchExchangeRates: () => dispatch(fetchExchangeRates()),
+    updateInputCurrencyCode: (currencyCode: string) => dispatch(updateInputCurrencyCode(currencyCode)),
+    updateOutputCurrencyCode: (currencyCode: string) => dispatch(updateOutputCurrencyCode(currencyCode))
   }
 }
 

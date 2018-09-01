@@ -10,7 +10,7 @@ import { combineReducers } from 'redux'
 const initialState = {
   shapeshiftExchangeRates: [],
   inputCurrencyCode: '',
-  inputCurrencyFiatRate: null,  
+  inputCurrencyFiatRate: null,
   outputCurrencyCode: '',
   outputCurrencyFiatRate: null
 }
@@ -70,5 +70,5 @@ export const exchange = combineReducers({
   inputCurrencyCode,
   inputCurrencyFiatRate,
   outputCurrencyCode,
-  outputCurrencyFiatRate  
+  outputCurrencyFiatRate
 })

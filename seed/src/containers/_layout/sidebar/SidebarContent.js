@@ -1,15 +1,15 @@
-import React, {PureComponent} from 'react';
-import {connect} from 'react-redux';
-import SidebarLink from './SidebarLink';
-import SidebarCategory from './SidebarCategory';
-import {changeThemeToDark, changeThemeToLight} from '../../../redux/actions/themeActions';
+import React, { PureComponent } from 'react'
+import { connect } from 'react-redux'
+import SidebarLink from './SidebarLink'
+import SidebarCategory from './SidebarCategory'
+import { changeThemeToDark, changeThemeToLight } from '../../../redux/actions/themeActions'
 import { makeEdgeUiContext } from 'edge-login-ui-web'
 import { logIn, logOut } from '../../../redux/actions/accountActions.js'
 
-let edgeContext // : EdgeUiContext 
+let edgeContext // : EdgeUiContext
 
 makeEdgeUiContext({
-  apiKey: "aac3421135575c7433551969b28f72c5b74d7b78",
+  apiKey: 'aac3421135575c7433551969b28f72c5b74d7b78',
   appId: 'com.kylan.whatever',
   appName: 'CaptainsRelay'
 }).then(async context => {
@@ -19,34 +19,35 @@ makeEdgeUiContext({
 
 class SidebarContent extends PureComponent {
   changeToDark = () => {
-    this.props.changeThemeToDark();
-    this.hideSidebar();
+    this.props.changeThemeToDark()
+    this.hideSidebar()
   };
-  
+
   changeToLight = () => {
-    this.props.changeThemeToLight();
-    this.hideSidebar();
+    this.props.changeThemeToLight()
+    this.hideSidebar()
   };
-  
+
   openLogin = () => {
     const { logIn } = this.props
-    if (edgeContext)
-    edgeContext.openLoginWindow({
-      onLogin(account) {
-        console.log('account is: ', account)        
-        logIn(account)    
-      },
-      onClose() {
-        console.log('Closing window')
-      } 
-    })
+    if (edgeContext) {
+      edgeContext.openLoginWindow({
+        onLogin (account) {
+          console.log('account is: ', account)
+          logIn(account)
+        },
+        onClose () {
+          console.log('Closing window')
+        }
+      })
+    }
   };
 
   hideSidebar = () => {
-    this.props.onClick();
+    this.props.onClick()
   };
 
-  render() {
+  render () {
     const { account, logOut } = this.props
     const accountOptionSyntax = account ? 'Log Out' : 'Log In'
     const onPressAccount = account ? logOut : this.openLogin
@@ -85,4 +86,4 @@ const mapDispatchToProps = (dispatch) => ({
   changeThemeToLight: () => dispatch(changeThemeToLight())
 })
 
-export const SidebarContentConnector = connect(mapStateToProps, mapDispatchToProps)(SidebarContent);
+export const SidebarContentConnector = connect(mapStateToProps, mapDispatchToProps)(SidebarContent)

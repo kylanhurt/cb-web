@@ -1,9 +1,9 @@
-import React, {PureComponent} from 'react';
-import {Col, Container, Row} from 'reactstrap';
-import ExampleCard from './components/ExampleCard';
+import React, { PureComponent } from 'react'
+import { Col, Container, Row } from 'reactstrap'
+import ExampleCard from './components/ExampleCard'
 
 export default class ExamplePage extends PureComponent {
-  render() {
+  render () {
     return (
       <Container className='dashboard'>
         <Row>
@@ -18,4 +18,3 @@ export default class ExamplePage extends PureComponent {
     )
   }
 }
-

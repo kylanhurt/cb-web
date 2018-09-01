@@ -1,7 +1,7 @@
-import React, {PureComponent} from 'react';
-import PropTypes from 'prop-types';
-import {Badge} from 'reactstrap';
-import {NavLink, withRouter} from 'react-router-dom';
+import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
+import { Badge } from 'reactstrap'
+import { NavLink, withRouter } from 'react-router-dom'
 
 class SidebarLink extends PureComponent {
   static propTypes = {
@@ -10,11 +10,11 @@ class SidebarLink extends PureComponent {
     new: PropTypes.bool,
     route: PropTypes.string
   };
-  
-  render() {
+
+  render () {
     return (
       <NavLink to={this.props.route ? this.props.route : '/'} onClick={this.props.onClick}
-               activeClassName='sidebar__link-active'>
+        activeClassName='sidebar__link-active'>
         <li className='sidebar__link'>
           {this.props.icon ? <span className={`sidebar__link-icon lnr lnr-${this.props.icon}`}/> : ''}
           <p className='sidebar__link-title'>
@@ -27,4 +27,4 @@ class SidebarLink extends PureComponent {
   }
 }
 
-export default withRouter(SidebarLink);
+export default withRouter(SidebarLink)
