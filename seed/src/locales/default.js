@@ -1,7 +1,7 @@
-import en_US from './en_US.js'
+import enUS from './en_US.js'
 
 const strings = {
-  ...en_US
+  ...enUS
 }
 
 export default strings
