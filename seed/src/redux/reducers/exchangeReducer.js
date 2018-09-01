@@ -7,15 +7,7 @@ import {
 } from '../actions/exchangeActions.js'
 import { combineReducers } from 'redux'
 
-const initialState = {
-  shapeshiftExchangeRates: [],
-  inputCurrencyCode: '',
-  inputCurrencyFiatRate: null,
-  outputCurrencyCode: '',
-  outputCurrencyFiatRate: null
-}
-
-export const shapeshiftExchangeRates = (state = initialState, action) => {
+export const shapeshiftExchangeRates = (state = [], action) => {
   const { data } = action
   switch (action.type) {
     case SHAPESHIFT_EXCHANGE_RATES:
@@ -25,7 +17,7 @@ export const shapeshiftExchangeRates = (state = initialState, action) => {
   }
 }
 
-export const inputCurrencyCode = (state = initialState.inputCurrencyCode, action) => {
+export const inputCurrencyCode = (state = '', action) => {
   const { data } = action
   switch (action.type) {
     case INPUT_CURRENCY_CODE:
@@ -35,7 +27,7 @@ export const inputCurrencyCode = (state = initialState.inputCurrencyCode, action
   }
 }
 
-export const inputCurrencyFiatRate = (state = initialState.inputCurrencyFiatRate, action) => {
+export const inputCurrencyFiatRate = (state = null, action) => {
   const { data } = action
   switch (action.type) {
     case INPUT_CURRENCY_FIAT_RATE:
@@ -45,7 +37,7 @@ export const inputCurrencyFiatRate = (state = initialState.inputCurrencyFiatRate
   }
 }
 
-export const outputCurrencyCode = (state = initialState.outputCurrencyCode, action) => {
+export const outputCurrencyCode = (state = '', action) => {
   const { data } = action
   switch (action.type) {
     case OUTPUT_CURRENCY_CODE:
@@ -55,7 +47,7 @@ export const outputCurrencyCode = (state = initialState.outputCurrencyCode, acti
   }
 }
 
-export const outputCurrencyFiatRate = (state = initialState.outputCurrencyFiatRate, action) => {
+export const outputCurrencyFiatRate = (state = null, action) => {
   const { data } = action
   switch (action.type) {
     case OUTPUT_CURRENCY_FIAT_RATE:

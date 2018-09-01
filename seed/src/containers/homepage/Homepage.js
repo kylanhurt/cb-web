@@ -1,12 +1,18 @@
 import React, { Component } from 'react'
 import { Col, Container, Row, Card, CardBody } from 'reactstrap'
 import { ellipsizeString } from '../../utils/utils.js'
+import { getSymbolFromCurrency } from '../../constants/currencyConstants.js'
+import strings from '../../locales/default.js'
 
 export class HomepageComponent extends Component {
   constructor (props) {
     super(props)
     this.props.fetchTokenList()
     this.props.fetchExchangeRates()
+    this.state = {
+      inputFiatAmountEstimate: '',
+      outputFiatAmountEstimate: ''
+    }
   }
   handleSubmit = () => {
     console.log('handling submit')
@@ -26,8 +32,15 @@ export class HomepageComponent extends Component {
     const {
       tokenDirectory,
       inputCurrencyCode,
-      outputCurrencyCode
+      inputCurrencyFiatRate,
+      outputCurrencyCode,
+      outputCurrencyFiatRate,
+      isoFiatCurrencyCode
     } = this.props
+
+    const fiatCurrencySymbol = getSymbolFromCurrency(isoFiatCurrencyCode)
+    const inputCurrencyFiatRateSyntax = inputCurrencyFiatRate ? `~ ${fiatCurrencySymbol} ${inputCurrencyFiatRate}` : strings.not_applicable
+    const outputCurrencyFiatRateSyntax = outputCurrencyFiatRate ? `~ ${fiatCurrencySymbol} ${outputCurrencyFiatRate}` : strings.not_applicable
 
     return (
       <Container className='dashboard'>
@@ -50,6 +63,7 @@ export class HomepageComponent extends Component {
                     </div>
                     <div className='col-7'>
                       <select value={inputCurrencyCode} onChange={this.onChangeInputCurrencyCode} className='form-control'>
+                        <option key={null} value={null}>----</option>
                         {tokenDirectory.map((token) => {
                           const tokenCode = token.symbol.split(' ')
                           return (
@@ -59,7 +73,7 @@ export class HomepageComponent extends Component {
                       </select>
                     </div>
                     <div className='col-2 form__form-group-label-wrap post'>
-                      <span className='form__form-group-label'>~ Test1</span>
+                      <span className='form__form-group-label'>{inputCurrencyFiatRateSyntax}</span>
                     </div>
                   </div>
 
@@ -81,6 +95,7 @@ export class HomepageComponent extends Component {
                     </div>
                     <div className='col-7'>
                       <select value={outputCurrencyCode} onChange={this.onChangeOutputCurrencyCode} className='form-control'>
+                        <option key={null} value={null}>----</option>
                         {tokenDirectory.map((token) => {
                           const tokenCode = token.symbol.split(' ')
                           return (
@@ -91,7 +106,7 @@ export class HomepageComponent extends Component {
                     </div>
 
                     <div className='col-2 form__form-group-label-wrap post'>
-                      <span className='form__form-group-label'>~ Test</span>
+                      <span className='form__form-group-label'>{outputCurrencyFiatRateSyntax}</span>
                     </div>
                   </div>
                   <div className='form__form-group form-row'>

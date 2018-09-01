@@ -20,13 +20,15 @@ export const updateShapeshiftExchangeRates = (shapeshiftExchangeRates) => (dispa
   })
 }
 
-export const updateInputCurrencyCode = (inputCurrencyCode: string) => async (dispatch) => {
+export const updateInputCurrencyCode = (inputCurrencyCode: string) => async (dispatch, getState) => {
+  const state = getState()
   let inputCurrencyFiatRate = null
   dispatch({
     type: INPUT_CURRENCY_CODE,
     data: { inputCurrencyCode }
   })
-  const settingsFiatCurrencyCode = 'USD' // state.settings.fiatCurrencyCode
+  const settingsIsoFiatCurrencyCode = state.settings.isoFiatCurrencyCode // state.settings.fiatCurrencyCode
+  const settingsFiatCurrencyCode = settingsIsoFiatCurrencyCode.replace('iso:', '')
   const url = `${CRYPTOCOMPARE_ENDPOINT}?fsym=${inputCurrencyCode}&tsyms=${settingsFiatCurrencyCode}`
   const response = await fetch(url, { mode: 'cors' })
   const exchangeRateInfo = await response.json()
@@ -41,9 +43,25 @@ export const updateInputCurrencyCode = (inputCurrencyCode: string) => async (dis
   })
 }
 
-export const updateOutputCurrencyCode = (outputCurrencyCode: string) => (dispatch) => {
+export const updateOutputCurrencyCode = (outputCurrencyCode: string) => async (dispatch, getState) => {
+  const state = getState()
+  let outputCurrencyFiatRate = null
   dispatch({
     type: OUTPUT_CURRENCY_CODE,
     data: { outputCurrencyCode }
+  })
+  const settingsIsoFiatCurrencyCode = state.settings.isoFiatCurrencyCode // state.settings.fiatCurrencyCode
+  const settingsFiatCurrencyCode = settingsIsoFiatCurrencyCode.replace('iso:', '')
+  const url = `${CRYPTOCOMPARE_ENDPOINT}?fsym=${outputCurrencyCode}&tsyms=${settingsFiatCurrencyCode}`
+  const response = await fetch(url, { mode: 'cors' })
+  const exchangeRateInfo = await response.json()
+  if (exchangeRateInfo.Response === 'Error') {
+    outputCurrencyFiatRate = null
+  } else {
+    outputCurrencyFiatRate = exchangeRateInfo[settingsFiatCurrencyCode]
+  }
+  dispatch({
+    type: OUTPUT_CURRENCY_FIAT_RATE,
+    data: { outputCurrencyFiatRate }
   })
 }

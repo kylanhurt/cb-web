@@ -9,7 +9,10 @@ import {
 import { HomepageComponent } from '../../containers/homepage/Homepage.js'
 
 const mapStateToProps = (state) => ({
-  tokenDirectory: state.tokens.tokensDirectory || []
+  tokenDirectory: state.tokens.tokensDirectory || [],
+  inputCurrencyFiatRate: state.exchange.inputCurrencyFiatRate,
+  outputCurrencyFiatRate: state.exchange.outputCurrencyFiatRate,
+  isoFiatCurrencyCode: state.settings.isoFiatCurrencyCode
 })
 
 const mapDispatchToProps = (dispatch) => {
