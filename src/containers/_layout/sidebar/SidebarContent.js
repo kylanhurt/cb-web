@@ -10,7 +10,7 @@ let edgeContext // : EdgeUiContext
 
 makeEdgeUiContext({
   apiKey: 'aac3421135575c7433551969b28f72c5b74d7b78',
-  appId: 'com.kylan.whatever',
+  appId: 'com.CaptainsRelay.www',
   appName: 'CaptainsRelay'
 }).then(async context => {
   edgeContext = context

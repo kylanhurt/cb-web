@@ -3,6 +3,7 @@ import { BigNumber } from '@0xproject/utils'
 import { Col, Container, Row, Card, CardBody } from 'reactstrap'
 import { ellipsizeString } from '../../utils/utils.js'
 import { getSymbolFromCurrency } from '../../constants/currencyConstants.js'
+import strings from '../../locales/default.js'
 
 export class HomepageComponent extends Component {
   constructor (props) {
@@ -107,7 +108,7 @@ export class HomepageComponent extends Component {
                       <label className='form__form-group-label' htmlFor='inputCurrencyAmount'>Amount to Sell:</label>
                     </div>
                     <div className='col-7'>
-                      <input type='number' placeholde='0' onChange={this.onChangeInputAmount} />
+                      <input className='form-control' type='number' placeholde='0' onChange={this.onChangeInputAmount} />
                     </div>
                     <div className='col-2 form__form-group-label-wrap post'>
                       <span className='form__form-group-label'>{inputEstimate}</span>
@@ -136,14 +137,18 @@ export class HomepageComponent extends Component {
                   </div>
                   <div className='form__form-group form-row'>
                     <div className='col-3 form__form-group-label-wrap'>
-                      <label className='form__form-group-label' htmlFor='outputCurrencyAmount'>Amount to Sell:</label>
+                      <label className='form__form-group-label' htmlFor='outputCurrencyAmount'>Amount to Buy:</label>
                     </div>
                     <div className='col-7'>
-                      <input type='number' placeholde='0' onChange={this.onChangeOutputAmount} />
+                      <input className='form-control' type='number' placeholde='0' onChange={this.onChangeOutputAmount} />
                     </div>
                     <div className='col-2 form__form-group-label-wrap post'>
                       <span className='form__form-group-label'>{outputEstimate}</span>
                     </div>
+                  </div>
+                  <div>
+                    <button className='btn btn-secondary' type='button'>{strings.clear}</button>
+                    <button className='btn btn-primary' type='submit'>{strings.submit}</button>
                   </div>
                 </form>
               </CardBody>
