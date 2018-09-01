@@ -1,8 +1,8 @@
-import React, {PureComponent} from 'react';
-import {Card, CardBody, Col} from 'reactstrap';
+import React, { PureComponent } from 'react'
+import { Card, CardBody, Col } from 'reactstrap'
 
 export default class ExampleCard extends PureComponent {
-  render() {
+  render () {
     return (
       <Col md={12}>
         <Card>
@@ -20,4 +20,3 @@ export default class ExampleCard extends PureComponent {
     )
   }
 }
-

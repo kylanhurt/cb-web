@@ -1,27 +1,27 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
-import '../scss/app.scss';
+import '../scss/app.scss'
 
-import Router from './Router';
+import Router from './Router'
 
 class App extends Component {
-  constructor() {
-    super();
+  constructor () {
+    super()
     this.state = {
       loading: true,
       loaded: false
     }
   }
-  
-  componentDidMount() {
+
+  componentDidMount () {
     window.addEventListener('load', () => {
-      this.setState({loading: false});
-      setTimeout(() => this.setState({loaded: true}), 500);
-    });
+      this.setState({ loading: false })
+      setTimeout(() => this.setState({ loaded: true }), 500)
+    })
   }
-  
-  render() {
-    const loaded = this.state.loaded;
+
+  render () {
+    const loaded = this.state.loaded
     return (
       <div>
         {!loaded && <div className={`load${this.state.loading ? '' : ' loaded'}`}>
@@ -39,4 +39,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default App

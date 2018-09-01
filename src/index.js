@@ -1,10 +1,10 @@
-import React from 'react';
-import App from './app/App';
-import {render} from 'react-dom'
-import {Provider} from 'react-redux'
-import {BrowserRouter} from 'react-router-dom';
-import store from './app/store';
-import ScrollToTop from './app/ScrollToTop';
+import React from 'react'
+import App from './app/App'
+import { render } from 'react-dom'
+import { Provider } from 'react-redux'
+import { BrowserRouter } from 'react-router-dom'
+import store from './app/store'
+import ScrollToTop from './app/ScrollToTop'
 
 render(
   <Provider store={store}>
@@ -15,4 +15,4 @@ render(
     </BrowserRouter>
   </Provider>,
   document.getElementById('root')
-);
+)

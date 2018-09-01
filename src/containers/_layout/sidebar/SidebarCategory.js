@@ -1,26 +1,26 @@
-import React, {PureComponent} from 'react';
-import {Collapse} from 'reactstrap';
-import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react'
+import { Collapse } from 'reactstrap'
+import PropTypes from 'prop-types'
 
 export default class SidebarCategory extends PureComponent {
   static propTypes = {
     title: PropTypes.string.isRequired,
     icon: PropTypes.string
   };
-  
-  constructor(props) {
-    super(props);
-    this.toggle = this.toggle.bind(this);
+
+  constructor (props) {
+    super(props)
+    this.toggle = this.toggle.bind(this)
     this.state = {
       collapse: false
-    };
+    }
   }
-  
-  toggle() {
-    this.setState({collapse: !this.state.collapse});
+
+  toggle () {
+    this.setState({ collapse: !this.state.collapse })
   }
-  
-  render() {
+
+  render () {
     return (
       <div className={`sidebar__category-wrap${this.state.collapse ? ' sidebar__category-wrap--open' : ''}`}>
         <li className='sidebar__link sidebar__category' onClick={this.toggle}>

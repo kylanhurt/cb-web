@@ -1,10 +1,10 @@
-import React, {PureComponent} from 'react';
+import React, { PureComponent } from 'react'
 import { makeEdgeUiContext } from 'edge-login-ui-web'
 
-let edgeContext // : EdgeUiContext 
+let edgeContext // : EdgeUiContext
 
 makeEdgeUiContext({
-  apiKey: "aac3421135575c7433551969b28f72c5b74d7b78",
+  apiKey: 'aac3421135575c7433551969b28f72c5b74d7b78',
   appId: 'com.kylan.whatever',
   appName: 'CaptainsRelay'
 }).then(async context => {
@@ -16,20 +16,20 @@ export default class LogIn extends PureComponent {
   constructor (props) {
     super(props)
     this.onClick = () => {
-      if (edgeContext)
-      edgeContext.openLoginWindow({
-        onLogin(account) {
-          console.log('account is: ', account)
-        },
-        onClose() {
-          console.log('Closing window')
-        } 
-      })
+      if (edgeContext) {
+        edgeContext.openLoginWindow({
+          onLogin (account) {
+            console.log('account is: ', account)
+          },
+          onClose () {
+            console.log('Closing window')
+          }
+        })
+      }
     }
   }
 
-
-  render() {
+  render () {
     return <button onClick={this.onClick}>Log in with Edge</button>
   }
 }

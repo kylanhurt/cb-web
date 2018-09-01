@@ -1,17 +1,16 @@
 export const ACCOUNT = 'ACCOUNT'
 
 export const logIn = (account) => async (dispatch, getState) => {
-  console.log('about to update account: ', account)
   dispatch(updateAccount(account))
   if (account.getFirstWalletInfo('wallet:ethereum') == null) {
-      account.createCurrencyWallet('wallet:ethereum')
+    account.createCurrencyWallet('wallet:ethereum')
       .then((wallet) => {
         const walletId = account.getFirstWalletInfo('wallet:ethereum').id
         console.log('walletId is: ', walletId)
       })
       .catch((e) => {
-      console.log('logIn error: ', e)
-    })
+        console.log('logIn error: ', e)
+      })
   }
 }
 
@@ -20,7 +19,7 @@ export const updateAccount = (account) => ({
   data: { account }
 })
 
-export const logOut = () => (dispatch: Dispatch, getState: getState) => {
+export const logOut = () => (dispatch, getState) => {
   const state = getState()
   const account = state.account
   if (account) account.logout()

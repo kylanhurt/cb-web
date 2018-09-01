@@ -1,9 +1,9 @@
-import React, {PureComponent} from 'react';
-import {connect} from 'react-redux';
+import React, { PureComponent } from 'react'
+import { connect } from 'react-redux'
 
 class MainWrapper extends PureComponent {
-  render() {
-    const theme = this.props.theme.className;
+  render () {
+    const theme = this.props.theme.className
     return (
       <div className={theme}>
         <div className={this.props.sidebar.collapse ? 'wrapper wrapper--full-width' : 'wrapper'}>
@@ -15,6 +15,6 @@ class MainWrapper extends PureComponent {
 }
 
 export default connect(state => {
-  return {theme: state.theme,
-          sidebar: state.sidebar}
-})(MainWrapper);
+  return { theme: state.theme,
+    sidebar: state.sidebar }
+})(MainWrapper)
