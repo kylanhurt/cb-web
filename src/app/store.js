@@ -5,7 +5,8 @@ import {
   sidebarReducer,
   themeReducer,
   tokens,
-  exchange
+  exchange,
+  settings
 } from '../redux/reducers/index'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
@@ -13,6 +14,7 @@ const reducer = combineReducers({
   account,
   exchange,
   tokens,
+  settings,
   theme: themeReducer,
   sidebar: sidebarReducer
 })
