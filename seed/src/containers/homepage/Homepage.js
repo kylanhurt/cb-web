@@ -15,8 +15,11 @@ export class HomepageComponent extends Component {
       outputFiatAmountEstimate: ''
     }
   }
-  handleSubmit = () => {
-    console.log('handling submit')
+  handleSubmit = (e) => {
+    const { submitOrder } = this.props
+    console.log('handling submit: ', e)
+    e.preventDefault()
+    submitOrder()
   }
 
   onChangeInputCurrencyCode = (event) => {
@@ -53,6 +56,7 @@ export class HomepageComponent extends Component {
 
   render () {
     const {
+      account,
       tokenDirectory,
       inputCurrencyCode,
       inputCurrencyFiatRate,
@@ -148,7 +152,7 @@ export class HomepageComponent extends Component {
                   </div>
                   <div>
                     <button className='btn btn-secondary' type='button'>{strings.clear}</button>
-                    <button className='btn btn-primary' type='submit'>{strings.submit}</button>
+                    <button className='btn btn-primary' disabled={!account} type='submit'>{strings.submit}</button>
                   </div>
                 </form>
               </CardBody>
