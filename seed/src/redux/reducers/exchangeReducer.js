@@ -69,11 +69,25 @@ export const isOrderFormProcessing = (state = false, action) => {
   }
 }
 
-export const orderFormFeedback = (state = '', action) => {
-  const { data } = action
+export const orderFormFeedback = (state = { message: '', type: null }, action) => {
+  if (!action.data) return state
+  const { message, type } = action.data
   switch (action.type) {
     case ORDER_FORM_FEEDBACK:
-      return data.orderFormFeedback
+      return {
+        message,
+        type
+      }
+    case OUTPUT_CURRENCY_CODE:
+      return {
+        message: '',
+        type: null
+      }
+    case INPUT_CURRENCY_CODE:
+      return {
+        message: '',
+        type: null
+      }
     default:
       return state
   }

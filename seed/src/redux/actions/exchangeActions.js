@@ -9,6 +9,8 @@ import { Web3ProviderEngine, RPCSubprovider, PrivateKeyWalletSubprovider } from 
 import { ZeroEx } from '0x.js'
 import { HttpClient } from '@0xproject/connect'
 import { Web3Wrapper } from '@0xproject/web3-wrapper'
+import { sprintf } from 'sprintf-js'
+import strings from '../../locales/default.js'
 
 export const INPUT_CURRENCY_CODE = 'INPUT_CURRENCY_CODE'
 export const OUTPUT_CURRENCY_CODE = 'OUTPUT_CURRENCY_CODE'
@@ -49,7 +51,7 @@ export const submitOrder = (order) => async (dispatch, getState) => {
     outputCurrencyCode
   } = order
   try {
-    dispatch(startOrderFormProcessing())
+    dispatch(updateOrderFormProcessing(true))
     const state = getState()
     const tokenDirectory = state.tokens.tokensDirectory
     startWeb3Engine(state)
@@ -114,10 +116,12 @@ export const submitOrder = (order) => async (dispatch, getState) => {
     }
     const orderbookResponse = await relayerClient.getOrderbookAsync(orderbookRequest)
     console.log('DEX: orderbookResponse is: ', orderbookResponse)
+    dispatch(updateOrderFormFeedback(sprintf(strings.submit_order_success, orderHash), 'success'))
   } catch (e) {
     console.log('error: ', e)
+    dispatch(updateOrderFormFeedback(e.message, 'danger'))
   }
-  dispatch(stopOrderFormProcessing())
+  dispatch(updateOrderFormProcessing(false))
 }
 
 export const fetchExchangeRates = () => async (dispatch) => {
@@ -179,16 +183,19 @@ export const updateOutputCurrencyCode = (outputCurrencyCode: string) => async (d
   })
 }
 
-export const startOrderFormProcessing = () => {
+export const updateOrderFormProcessing = (isOrderFormProcessing: boolean) => {
   return {
     type: ORDER_FORM_PROCESSING,
-    data: { isOrderFormProcessing: true }
+    data: { isOrderFormProcessing }
   }
 }
 
-export const stopOrderFormProcessing = () => {
+export const updateOrderFormFeedback = (message: string, type: string) => {
   return {
-    type: ORDER_FORM_PROCESSING,
-    data: { isOrderFormProcessing: false }
+    type: ORDER_FORM_FEEDBACK,
+    data: {
+      message,
+      type
+    }
   }
 }
