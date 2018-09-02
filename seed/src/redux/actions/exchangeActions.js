@@ -15,6 +15,8 @@ export const OUTPUT_CURRENCY_CODE = 'OUTPUT_CURRENCY_CODE'
 export const INPUT_CURRENCY_FIAT_RATE = 'UPDATE_INPUT_CURRENCY_FIAT_RATE'
 export const OUTPUT_CURRENCY_FIAT_RATE = 'UPDATE_OUTPUT_CURRENCY_FIAT_RATE'
 export const SHAPESHIFT_EXCHANGE_RATES = 'SHAPESHIFT_EXCHANGE_RATES'
+export const ORDER_FORM_PROCESSING = 'ORDER_FORM_PROCESSING'
+export const ORDER_FORM_FEEDBACK = 'ORDER_FORM_FEEDBACK'
 
 const SHAPESHIFT_RATE_ENDPOINT = 'https://shapeshift.io/rate/'
 const CRYPTOCOMPARE_ENDPOINT = 'https://min-api.cryptocompare.com/data/price'
@@ -24,13 +26,7 @@ const configs = {
   networkId: NETWORK_ID
 }
 
-const ACCOUNT_INFO = {
-  DEX_TRADER_1: {
-    PUBLIC_ADDRESS: '0x67388c030417d0b062bd8751ed020e38f4c26d4d'
-  }
-}
-
-export const startWeb3Engine = (state) => (dispatch, getState) => {
+export const startWeb3Engine = (state) => {
   const ids = Object.getOwnPropertyNames(state.wallets)
   const selectedWalletId = ids[0]
   const ethereumKey = state.wallets[selectedWalletId].keys.ethereumKey
@@ -47,12 +43,13 @@ export const startWeb3Engine = (state) => (dispatch, getState) => {
 
 export const submitOrder = (order) => async (dispatch, getState) => {
   const {
-    sellTokenCode,
-    sellTokenAmount,
-    buyTokenCode,
-    buyTokenAmount
+    inputAmount,
+    inputCurrencyCode,
+    outputAmount,
+    outputCurrencyCode
   } = order
   try {
+    dispatch(startOrderFormProcessing())
     const state = getState()
     const tokenDirectory = state.tokens.tokensDirectory
     startWeb3Engine(state)
@@ -64,20 +61,22 @@ export const submitOrder = (order) => async (dispatch, getState) => {
     const accounts = await web3Wrapper.getAvailableAddressesAsync()
     console.log('accounts: ', accounts)
 
-    const sellTokenInfo = tokenDirectory.find(token => token.symbol === sellTokenCode)
-    if (!sellTokenInfo) console.log('DEX: Token contract address not found for ', sellTokenCode)
+    const sellTokenInfo = tokenDirectory.find(token => token.symbol === inputCurrencyCode)
+    if (!sellTokenInfo) console.log('DEX: Token contract address not found for input currency: ', inputCurrencyCode)
     const SELL_TOKEN_CONTRACT_ADDRESS = sellTokenInfo.address.toLowerCase()
     const SELL_TOKEN_DECIMALS = sellTokenInfo.decimal
 
-    const buyTokenInfo = tokenDirectory.find(token => token.symbol === buyTokenCode)
-    if (!buyTokenInfo) console.log('DEX: Token contract address not found for ', buyTokenCode)
+    const buyTokenInfo = tokenDirectory.find(token => token.symbol === outputCurrencyCode)
+    if (!buyTokenInfo) console.log('DEX: Token contract address not found for output currency: ', outputCurrencyCode)
     const BUY_TOKEN_CONTRACT_ADDRESS = buyTokenInfo.address.toLowerCase()
     const BUY_TOKEN_DECIMALS = buyTokenInfo.decimal
 
     const EXCHANGE_CONTRACT_ADDRESS = zeroEx.exchange.getContractAddress()
-    const makerAddress = ACCOUNT_INFO.DEX_TRADER_1.PUBLIC_ADDRESS.toLowerCase()
+    const makerAddress = accounts[0].toLowerCase()
+    console.log('setMakerAllowTxHash')
     const setMakerAllowTxHash = await zeroEx.token.setUnlimitedProxyAllowanceAsync(SELL_TOKEN_CONTRACT_ADDRESS, makerAddress)
     await zeroEx.awaitTransactionMinedAsync(setMakerAllowTxHash)
+    console.log('setMakerAllowTxHash has been set, hash is: ', setMakerAllowTxHash)
 
     // Generate feesRequest
     const feesRequest = {
@@ -88,12 +87,13 @@ export const submitOrder = (order) => async (dispatch, getState) => {
       takerTokenAddress: BUY_TOKEN_CONTRACT_ADDRESS, // The token address the Maker is requesting from the Taker.
       exchangeContractAddress: EXCHANGE_CONTRACT_ADDRESS, // The exchange.sol address.
       salt: ZeroEx.generatePseudoRandomSalt(), // Random number to make the order (and therefore its hash) unique.
-      makerTokenAmount: ZeroEx.toBaseUnitAmount(new BigNumber(sellTokenAmount), SELL_TOKEN_DECIMALS), // Base 18 decimals, The amount of sell token the Maker is offering.
-      takerTokenAmount: ZeroEx.toBaseUnitAmount(new BigNumber(buyTokenAmount), BUY_TOKEN_DECIMALS), // Base 18 decimals, The amount of buy token the Maker is requesting from the Taker.
+      makerTokenAmount: ZeroEx.toBaseUnitAmount(new BigNumber(inputAmount), SELL_TOKEN_DECIMALS), // Base 18 decimals, The amount of sell token the Maker is offering.
+      takerTokenAmount: ZeroEx.toBaseUnitAmount(new BigNumber(outputAmount), BUY_TOKEN_DECIMALS), // Base 18 decimals, The amount of buy token the Maker is requesting from the Taker.
       expirationUnixTimestampSec: new BigNumber(Date.now() + 28800000) // When will the order expire (in unix time), Valid for up to 8 hours
     }
     const relayerClient = new HttpClient(RELAYER_API_URL)
     const feesResponse = await relayerClient.getFeesAsync(feesRequest)
+    console.log('feesResponse is: ', feesResponse)
     const order = {
       ...feesRequest,
       ...feesResponse
@@ -102,10 +102,12 @@ export const submitOrder = (order) => async (dispatch, getState) => {
     const shouldAddPersonalMessagePrefix = false
     const ecSignature = await zeroEx.signOrderHashAsync(orderHash, makerAddress, shouldAddPersonalMessagePrefix)
     const signedOrder = {
+      orderHash,
       ...order,
       ecSignature
     }
     await relayerClient.submitOrderAsync(signedOrder)
+    console.log('order submitted to relayer, signedOrder is: ', signedOrder)
     const orderbookRequest = {
       baseTokenAddress: SELL_TOKEN_CONTRACT_ADDRESS,
       quoteTokenAddress: BUY_TOKEN_CONTRACT_ADDRESS
@@ -115,6 +117,7 @@ export const submitOrder = (order) => async (dispatch, getState) => {
   } catch (e) {
     console.log('error: ', e)
   }
+  dispatch(stopOrderFormProcessing())
 }
 
 export const fetchExchangeRates = () => async (dispatch) => {
@@ -174,4 +177,18 @@ export const updateOutputCurrencyCode = (outputCurrencyCode: string) => async (d
     type: OUTPUT_CURRENCY_FIAT_RATE,
     data: { outputCurrencyFiatRate }
   })
+}
+
+export const startOrderFormProcessing = () => {
+  return {
+    type: ORDER_FORM_PROCESSING,
+    data: { isOrderFormProcessing: true }
+  }
+}
+
+export const stopOrderFormProcessing = () => {
+  return {
+    type: ORDER_FORM_PROCESSING,
+    data: { isOrderFormProcessing: false }
+  }
 }
