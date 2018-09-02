@@ -74,12 +74,14 @@ export class SubmitBuyOrderComponent extends Component {
       orderFormFeedback
     } = this.props
     const { inputFiatAmountEstimate, outputFiatAmountEstimate } = this.state
-
+    let alertClass = ''
     const fiatCurrencySymbol = getSymbolFromCurrency(isoFiatCurrencyCode)
     const inputCurrencyFiatRateSyntax = inputCurrencyFiatRate ? `~ ${fiatCurrencySymbol} ${inputCurrencyFiatRate}` : ''
     const inputEstimate = inputFiatAmountEstimate ? `~ ${fiatCurrencySymbol} ${inputFiatAmountEstimate}` : ''
     const outputCurrencyFiatRateSyntax = outputCurrencyFiatRate ? `~ ${fiatCurrencySymbol} ${outputCurrencyFiatRate}` : ''
     const outputEstimate = outputFiatAmountEstimate ? `~ ${fiatCurrencySymbol} ${outputFiatAmountEstimate}` : ''
+
+    if (orderFormFeedback.type) alertClass = `alert alert-${orderFormFeedback.type}`
 
     return (
       <div>
@@ -150,10 +152,10 @@ export class SubmitBuyOrderComponent extends Component {
               <span className='form__form-group-label'>{outputEstimate}</span>
             </div>
           </div>
-          <div className='feedback-area'>
-            {orderFormFeedback && <span>{strings[orderFormFeedback]}</span>}
+          <div className={`feedback-area alert ${alertClass} form-row`}>
+            {orderFormFeedback.message && <span>{orderFormFeedback.message}</span>}
           </div>
-          <div className='centered-form-buttons'>
+          <div className='centered-form-buttons form-row'>
             <button className='btn btn-secondary btn-lg' style={{ width: 200 }} type='button'>{strings.clear}</button>
             <button className='btn btn-primary btn-lg' style={{ width: 200 }} disabled={!account || isOrderFormProcessing} type='submit'>{isOrderFormProcessing ? 'Processing...' : strings.submit}</button>
           </div>
