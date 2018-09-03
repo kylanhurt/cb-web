@@ -15,7 +15,13 @@ export class SubmitBuyOrderComponent extends Component {
       outputFiatAmountEstimate: '',
       outputAmount: ''
     }
+    // should be removed later
+    setTimeout(() => {
+      props.updateOutputCurrencyCode('WETH')
+      props.updateInputCurrencyCode('ZRX')
+    }, 3000)
   }
+
   handleSubmit = (e) => {
     const { submitOrder, inputCurrencyCode, outputCurrencyCode } = this.props
     const { inputAmount, outputAmount } = this.state

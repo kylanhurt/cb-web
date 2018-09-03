@@ -7,3 +7,11 @@ export const ellipsizeString = (input: string, length: number): string => {
   const output = `${firstHalf}...${secondHalf}`
   return output
 }
+
+export const getTokenInfo = (currencyCode, state) => {
+  const tokensDirectory = state.tokens.tokensDirectory
+  if (!tokensDirectory) return null
+  const tokenInfo = tokensDirectory.find(token => token.symbol === currencyCode)
+  if (!tokenInfo) return null
+  return tokenInfo
+}

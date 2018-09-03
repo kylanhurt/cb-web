@@ -10,6 +10,7 @@ import { ZeroEx } from '0x.js'
 import { HttpClient } from '@0xproject/connect'
 import { Web3Wrapper } from '@0xproject/web3-wrapper'
 import { sprintf } from 'sprintf-js'
+import { getTokenInfo } from '../../utils/utils.js'
 import strings from '../../locales/default.js'
 
 export const INPUT_CURRENCY_CODE = 'INPUT_CURRENCY_CODE'
@@ -19,7 +20,7 @@ export const OUTPUT_CURRENCY_FIAT_RATE = 'UPDATE_OUTPUT_CURRENCY_FIAT_RATE'
 export const SHAPESHIFT_EXCHANGE_RATES = 'SHAPESHIFT_EXCHANGE_RATES'
 export const ORDER_FORM_PROCESSING = 'ORDER_FORM_PROCESSING'
 export const ORDER_FORM_FEEDBACK = 'ORDER_FORM_FEEDBACK'
-
+export const ORDER_BOOK = 'ORDER_BOOK'
 const SHAPESHIFT_RATE_ENDPOINT = 'https://shapeshift.io/rate/'
 const CRYPTOCOMPARE_ENDPOINT = 'https://min-api.cryptocompare.com/data/price'
 
@@ -53,7 +54,6 @@ export const submitOrder = (order) => async (dispatch, getState) => {
   try {
     dispatch(updateOrderFormProcessing(true))
     const state = getState()
-    const tokenDirectory = state.tokens.tokensDirectory
     startWeb3Engine(state)
     const ids = Object.getOwnPropertyNames(state.wallets)
     const selectedWalletId = ids[0]
@@ -63,12 +63,12 @@ export const submitOrder = (order) => async (dispatch, getState) => {
     const accounts = await web3Wrapper.getAvailableAddressesAsync()
     console.log('accounts: ', accounts)
 
-    const sellTokenInfo = tokenDirectory.find(token => token.symbol === inputCurrencyCode)
-    if (!sellTokenInfo) console.log('DEX: Token contract address not found for input currency: ', inputCurrencyCode)
-    const SELL_TOKEN_CONTRACT_ADDRESS = sellTokenInfo.address.toLowerCase()
-    const SELL_TOKEN_DECIMALS = sellTokenInfo.decimal
+    const inputCurrencyInfo = getTokenInfo(inputCurrencyCode, state)
+    if (!inputCurrencyInfo) console.log('DEX: Token contract address not found for input currency: ', inputCurrencyCode)
+    const SELL_TOKEN_CONTRACT_ADDRESS = inputCurrencyInfo.address.toLowerCase()
+    const SELL_TOKEN_DECIMALS = inputCurrencyInfo.decimal
 
-    const buyTokenInfo = tokenDirectory.find(token => token.symbol === outputCurrencyCode)
+    const buyTokenInfo = getTokenInfo(outputCurrencyCode, state)
     if (!buyTokenInfo) console.log('DEX: Token contract address not found for output currency: ', outputCurrencyCode)
     const BUY_TOKEN_CONTRACT_ADDRESS = buyTokenInfo.address.toLowerCase()
     const BUY_TOKEN_DECIMALS = buyTokenInfo.decimal
@@ -139,11 +139,13 @@ export const updateShapeshiftExchangeRates = (shapeshiftExchangeRates) => (dispa
 
 export const updateInputCurrencyCode = (inputCurrencyCode: string) => async (dispatch, getState) => {
   const state = getState()
+  const outputCurrencyCode = state.exchange.outputCurrencyCode
   let inputCurrencyFiatRate = null
   dispatch({
     type: INPUT_CURRENCY_CODE,
     data: { inputCurrencyCode }
   })
+  if (inputCurrencyCode && outputCurrencyCode) dispatch(fetchDexOrderBook())
   const settingsIsoFiatCurrencyCode = state.settings.isoFiatCurrencyCode // state.settings.fiatCurrencyCode
   const settingsFiatCurrencyCode = settingsIsoFiatCurrencyCode.replace('iso:', '')
   const url = `${CRYPTOCOMPARE_ENDPOINT}?fsym=${inputCurrencyCode}&tsyms=${settingsFiatCurrencyCode}`
@@ -162,11 +164,13 @@ export const updateInputCurrencyCode = (inputCurrencyCode: string) => async (dis
 
 export const updateOutputCurrencyCode = (outputCurrencyCode: string) => async (dispatch, getState) => {
   const state = getState()
+  const inputCurrencyCode = state.exchange.inputCurrencyCode
   let outputCurrencyFiatRate = null
   dispatch({
     type: OUTPUT_CURRENCY_CODE,
     data: { outputCurrencyCode }
   })
+  if (inputCurrencyCode && outputCurrencyCode) dispatch(fetchDexOrderBook())
   const settingsIsoFiatCurrencyCode = state.settings.isoFiatCurrencyCode // state.settings.fiatCurrencyCode
   const settingsFiatCurrencyCode = settingsIsoFiatCurrencyCode.replace('iso:', '')
   const url = `${CRYPTOCOMPARE_ENDPOINT}?fsym=${outputCurrencyCode}&tsyms=${settingsFiatCurrencyCode}`
@@ -177,6 +181,7 @@ export const updateOutputCurrencyCode = (outputCurrencyCode: string) => async (d
   } else {
     outputCurrencyFiatRate = exchangeRateInfo[settingsFiatCurrencyCode]
   }
+
   dispatch({
     type: OUTPUT_CURRENCY_FIAT_RATE,
     data: { outputCurrencyFiatRate }
@@ -197,5 +202,40 @@ export const updateOrderFormFeedback = (message: string, type: string) => {
       message,
       type
     }
+  }
+}
+
+export const fetchDexOrderBook = () => async (dispatch, getState) => {
+  const state = getState()
+  const tokenDirectory = state.tokens.tokensDirectory
+  const inputCurrencyCode = state.exchange.inputCurrencyCode
+  const outputCurrencyCode = state.exchange.outputCurrencyCode
+  // get inputCurrency info
+  const inputCurrencyInfo = tokenDirectory.find(token => token.symbol === inputCurrencyCode)
+  if (!inputCurrencyInfo) console.log('DEX: Token contract address not found for ', inputCurrencyCode)
+  const INPUT_CURRENCY_CONTRACT_ADDRESS = inputCurrencyInfo.address.toLowerCase()
+
+  // get outputCurrency info
+  const outputCurrencyInfo = tokenDirectory.find(token => token.symbol === outputCurrencyCode)
+  if (!outputCurrencyInfo) console.log('DEX: Token contract address not found for ', outputCurrencyCode)
+  const OUTPUT_CURRENCY_CONTRACT_ADDRESS = outputCurrencyInfo.address.toLowerCase()
+
+  const relayerClient = new HttpClient(RELAYER_API_URL)
+  console.log('DEX: Relayer client set')
+
+  const orderBookRequest = {
+    baseTokenAddress: OUTPUT_CURRENCY_CONTRACT_ADDRESS,
+    quoteTokenAddress: INPUT_CURRENCY_CONTRACT_ADDRESS
+  }
+
+  const orderBookResponse = await relayerClient.getOrderbookAsync(orderBookRequest)
+  console.log('DEX: orderBookResponse is: ', orderBookResponse)
+  dispatch(updateDexOrderBook(orderBookResponse))
+}
+
+export function updateDexOrderBook (orderBook) {
+  return {
+    type: ORDER_BOOK,
+    data: orderBook
   }
 }

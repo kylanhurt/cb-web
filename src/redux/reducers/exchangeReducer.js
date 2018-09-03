@@ -5,7 +5,8 @@ import {
   OUTPUT_CURRENCY_FIAT_RATE,
   SHAPESHIFT_EXCHANGE_RATES,
   ORDER_FORM_PROCESSING,
-  ORDER_FORM_FEEDBACK
+  ORDER_FORM_FEEDBACK,
+  ORDER_BOOK
 } from '../actions/exchangeActions.js'
 import { combineReducers } from 'redux'
 
@@ -93,12 +94,22 @@ export const orderFormFeedback = (state = { message: '', type: null }, action) =
   }
 }
 
+export const orderBook = (state = [], action) => {
+  switch (action.type) {
+    case ORDER_BOOK:
+      return action.data
+    default:
+      return state
+  }
+}
+
 export const exchange = combineReducers({
   shapeshiftExchangeRates,
   inputCurrencyCode,
   inputCurrencyFiatRate,
   outputCurrencyCode,
   outputCurrencyFiatRate,
+  orderBook,
   isOrderFormProcessing,
   orderFormFeedback
 })
