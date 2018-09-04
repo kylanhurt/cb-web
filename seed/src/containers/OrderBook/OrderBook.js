@@ -4,6 +4,7 @@ import Table from '../../components/table/Table.js'
 import strings from '../../locales/default.js'
 import { getSymbolFromCurrency } from '../../constants/currencyConstants.js'
 import { sprintf } from 'sprintf-js'
+import { OrderBookModalConnector } from '../../redux/connectors/OrderBookModalConnector.js'
 
 export class OrderBookComponent extends Component {
   constructor (props) {
@@ -21,7 +22,9 @@ export class OrderBookComponent extends Component {
       outputCurrencyCode,
       outputCurrencyInfo,
       outputCurrencyFiatRate,
-      isoFiatCurrencyCode
+      isoFiatCurrencyCode,
+      selectOrder,
+      isOrderBookModalVisible
     } = this.props
     const fiatCurrencySymbol = getSymbolFromCurrency(isoFiatCurrencyCode)
     return (
@@ -49,17 +52,18 @@ export class OrderBookComponent extends Component {
               const outputEstimate = outputFiatAmountEstimate ? `${fiatCurrencySymbol} ${outputFiatAmountEstimate.toFixed(2)}` : ''
               const price = outputAmount / inputAmount
               return (
-                <tr key={order.orderHash}>
-                  <td style={{ textAlign: 'right' }}>{outputAmount.toFixed(6).toString()}</td>
+                <tr key={order.orderHash} onClick={() => selectOrder(order.orderHash)}>
+                  <td style={{ textAlign: 'right' }}>{outputAmount.toString()}</td>
                   <td style={{ textAlign: 'right' }}>{outputEstimate}</td>
-                  <td style={{ textAlign: 'right' }}>{inputAmount.toFixed(6).toString()}</td>
+                  <td style={{ textAlign: 'right' }}>{inputAmount.toString()}</td>
                   <td style={{ textAlign: 'right' }}>{inputEstimate}</td>
-                  <td>{price.toFixed(6).toString()}</td>
+                  <td style={{ textAlign: 'right' }}>{price.toFixed(6).toString()}</td>
                 </tr>
               )
             })}
           </tbody>
         </Table>
+        {isOrderBookModalVisible && <OrderBookModalConnector />}
       </div>
     )
   }

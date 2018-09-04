@@ -41,6 +41,8 @@ export class SubmitBuyOrderComponent extends Component {
   }
 
   onChangeInputAmount = (event) => {
+    const input = event.target.value
+    if (isNaN(input) || input === '') return
     const { inputCurrencyFiatRate } = this.props
     let inputFiatAmountEstimate = ''
     const inputAmount = new BigNumber(event.target.value)
@@ -52,6 +54,8 @@ export class SubmitBuyOrderComponent extends Component {
   }
 
   onChangeOutputAmount = (event) => {
+    const input = event.target.value
+    if (isNaN(input) || input === '') return
     const { outputCurrencyFiatRate } = this.props
     let outputFiatAmountEstimate = ''
     const outputAmount = new BigNumber(event.target.value)
