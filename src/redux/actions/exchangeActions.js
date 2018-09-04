@@ -10,7 +10,7 @@ import { ZeroEx } from '0x.js'
 import { HttpClient } from '@0xproject/connect'
 import { Web3Wrapper } from '@0xproject/web3-wrapper'
 import { sprintf } from 'sprintf-js'
-import { getTokenInfo } from '../../utils/utils.js'
+import { getTokenInfoFromCurrencyCode } from '../../utils/utils.js'
 import strings from '../../locales/default.js'
 
 export const INPUT_CURRENCY_CODE = 'INPUT_CURRENCY_CODE'
@@ -21,9 +21,12 @@ export const SHAPESHIFT_EXCHANGE_RATES = 'SHAPESHIFT_EXCHANGE_RATES'
 export const ORDER_FORM_PROCESSING = 'ORDER_FORM_PROCESSING'
 export const ORDER_FORM_FEEDBACK = 'ORDER_FORM_FEEDBACK'
 export const ORDER_BOOK = 'ORDER_BOOK'
+export const SELECTED_ORDER = 'SELECTED_ORDER'
+export const ORDER_BOOK_MODAL_VISIBILITY = 'ORDER_BOOK_MODAL_VISIBILITY'
+export const FILL_ORDER_PROCESSING = 'FILL_ORDER_PROCESSING'
 const SHAPESHIFT_RATE_ENDPOINT = 'https://shapeshift.io/rate/'
 const CRYPTOCOMPARE_ENDPOINT = 'https://min-api.cryptocompare.com/data/price'
-
+const ZRX_TOKEN_ADDRESS = '0xe41d2489571d322189246dafa5ebde1f4699f498'.toLowerCase()
 const providers = {}
 const configs = {
   networkId: NETWORK_ID
@@ -63,12 +66,12 @@ export const submitOrder = (order) => async (dispatch, getState) => {
     const accounts = await web3Wrapper.getAvailableAddressesAsync()
     console.log('accounts: ', accounts)
 
-    const inputCurrencyInfo = getTokenInfo(inputCurrencyCode, state)
+    const inputCurrencyInfo = getTokenInfoFromCurrencyCode(inputCurrencyCode, state)
     if (!inputCurrencyInfo) console.log('DEX: Token contract address not found for input currency: ', inputCurrencyCode)
     const SELL_TOKEN_CONTRACT_ADDRESS = inputCurrencyInfo.address.toLowerCase()
     const SELL_TOKEN_DECIMALS = inputCurrencyInfo.decimal
 
-    const buyTokenInfo = getTokenInfo(outputCurrencyCode, state)
+    const buyTokenInfo = getTokenInfoFromCurrencyCode(outputCurrencyCode, state)
     if (!buyTokenInfo) console.log('DEX: Token contract address not found for output currency: ', outputCurrencyCode)
     const BUY_TOKEN_CONTRACT_ADDRESS = buyTokenInfo.address.toLowerCase()
     const BUY_TOKEN_DECIMALS = buyTokenInfo.decimal
@@ -237,5 +240,92 @@ export function updateDexOrderBook (orderBook) {
   return {
     type: ORDER_BOOK,
     data: orderBook
+  }
+}
+
+export const selectOrder = (orderHash) => (dispatch, getState) => {
+  const state = getState()
+  const orderBook = state.exchange.orderBook
+  const combinedOrderBook = [...orderBook.asks, ...orderBook.bids]
+  let selectedOrder = combinedOrderBook.find(order => orderHash === order.orderHash)
+  if (!selectedOrder) selectedOrder = null
+  dispatch({
+    type: SELECTED_ORDER,
+    data: { selectedOrder }
+  })
+  if (selectedOrder) dispatch(updateOrderBookModalVisibility(true))
+}
+
+export const updateOrderBookModalVisibility = (isVisible) => {
+  return {
+    type: ORDER_BOOK_MODAL_VISIBILITY,
+    data: { isVisible }
+  }
+}
+
+export const fillOrder = () => async (dispatch, getState) => {
+  dispatch(updateFillOrderProcessing(true))
+  try {
+    const state = getState()
+    const ids = Object.getOwnPropertyNames(state.wallets)
+    const selectedWalletId = ids[0]
+    const order = state.exchange.selectedOrder
+    const TAKER_CONTRACT_ADDRESS = order.takerTokenAddress
+    let web3Engine = providers[selectedWalletId]
+    if (!web3Engine) web3Engine = startWeb3Engine(state)
+    const zeroEx = new ZeroEx(providers[selectedWalletId], configs)
+    const web3Wrapper = new Web3Wrapper(web3Engine)
+
+    const accounts = await web3Wrapper.getAvailableAddressesAsync()
+    const takerAddress = accounts[0].toLowerCase() // own address
+    const allowanceAmount = await zeroEx.token.getProxyAllowanceAsync(TAKER_CONTRACT_ADDRESS, takerAddress)
+    console.log('DEX: allowanceAmount is: ', allowanceAmount)
+    if (allowanceAmount.lt(order.takerTokenAmount)) {
+      console.log('DEX: taker token allowance not high enough, setting unlimited proxy allowance')
+      const setTakerAllowTxHash = await zeroEx.token.setUnlimitedProxyAllowanceAsync(TAKER_CONTRACT_ADDRESS, takerAddress)
+      console.log('DEX: increase setMakerAllowTxHash: ', setTakerAllowTxHash)
+      await zeroEx.awaitTransactionMinedAsync(setTakerAllowTxHash)
+    }
+
+    // may need something more graceful than just setting to unlimited...
+    const setZrxAllowTxHash = await zeroEx.token.setUnlimitedProxyAllowanceAsync(ZRX_TOKEN_ADDRESS, takerAddress)
+    await zeroEx.awaitTransactionMinedAsync(setZrxAllowTxHash)
+
+    const orderHash = ZeroEx.getOrderHashHex(order)
+    console.log('DEX: orderHash is: ', orderHash)
+    // Signing orderHash -> ecSignature
+    const shouldAddPersonalMessagePrefix = false
+    const ecSignature = await zeroEx.signOrderHashAsync(orderHash, takerAddress, shouldAddPersonalMessagePrefix)
+    console.log('DEX: ecSignature is: ', ecSignature)
+
+    const signedOrder = {
+      ...order
+    }
+
+    // Verify that order is fillable
+    await zeroEx.exchange.validateOrderFillableOrThrowAsync(signedOrder)
+
+    // Try to fill order
+    const shouldThrowOnInsufficientBalanceOrAllowance = true
+    console.log('DEX: about to fill order')
+    const fillTxHash = await zeroEx.exchange.fillOrderAsync(
+      signedOrder,
+      order.takerTokenAmount,
+      shouldThrowOnInsufficientBalanceOrAllowance,
+      takerAddress
+    )
+    console.log('DEX: fillTxHash is: ', fillTxHash)
+    const txReceipt = await zeroEx.awaitTransactionMinedAsync(fillTxHash)
+    console.log('DEX: order fulfillment transaction completed!, txReceipt is: ', txReceipt)
+  } catch (e) {
+    console.log('DEX Order Fill error', e)
+  }
+  dispatch(updateFillOrderProcessing(false))
+}
+
+export const updateFillOrderProcessing = (isProcessing) => {
+  return {
+    type: FILL_ORDER_PROCESSING,
+    data: { isProcessing }
   }
 }

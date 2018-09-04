@@ -1,4 +1,4 @@
-import { WALLET } from '../actions/accountActions.js'
+import { WALLET, DESTROY_ACCOUNT } from '../actions/accountActions.js'
 
 export const wallets = (state = {}, action) => {
   if (!action.data) return state
@@ -9,6 +9,8 @@ export const wallets = (state = {}, action) => {
         ...state,
         [wallet.id]: wallet
       }
+    case DESTROY_ACCOUNT:
+      return {}
     default:
       return state
   }

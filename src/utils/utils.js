@@ -8,10 +8,18 @@ export const ellipsizeString = (input: string, length: number): string => {
   return output
 }
 
-export const getTokenInfo = (currencyCode, state) => {
+export const getTokenInfoFromCurrencyCode = (currencyCode, state) => {
   const tokensDirectory = state.tokens.tokensDirectory
   if (!tokensDirectory) return null
   const tokenInfo = tokensDirectory.find(token => token.symbol === currencyCode)
+  if (!tokenInfo) return null
+  return tokenInfo
+}
+
+export const getTokenInfoFromAddress = (address, state) => {
+  const tokensDirectory = state.tokens.tokensDirectory
+  if (!tokensDirectory) return null
+  const tokenInfo = tokensDirectory.find(token => token.address.toLowerCase() === address.toLowerCase())
   if (!tokenInfo) return null
   return tokenInfo
 }

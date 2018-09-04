@@ -6,7 +6,10 @@ import {
   SHAPESHIFT_EXCHANGE_RATES,
   ORDER_FORM_PROCESSING,
   ORDER_FORM_FEEDBACK,
-  ORDER_BOOK
+  ORDER_BOOK,
+  SELECTED_ORDER,
+  ORDER_BOOK_MODAL_VISIBILITY,
+  FILL_ORDER_PROCESSING
 } from '../actions/exchangeActions.js'
 import { combineReducers } from 'redux'
 
@@ -103,6 +106,33 @@ export const orderBook = (state = [], action) => {
   }
 }
 
+export const selectedOrder = (state = null, action) => {
+  switch (action.type) {
+    case SELECTED_ORDER:
+      return action.data.selectedOrder
+    default:
+      return state
+  }
+}
+
+export const isOrderBookModalVisible = (state = false, action) => {
+  switch (action.type) {
+    case ORDER_BOOK_MODAL_VISIBILITY:
+      return action.data.isVisible
+    default:
+      return state
+  }
+}
+
+export const isFillOrderProcessing = (state = false, action) => {
+  switch (action.type) {
+    case FILL_ORDER_PROCESSING:
+      return action.data.isProcessing
+    default:
+      return state
+  }
+}
+
 export const exchange = combineReducers({
   shapeshiftExchangeRates,
   inputCurrencyCode,
@@ -110,6 +140,9 @@ export const exchange = combineReducers({
   outputCurrencyCode,
   outputCurrencyFiatRate,
   orderBook,
+  selectedOrder,
   isOrderFormProcessing,
-  orderFormFeedback
+  orderFormFeedback,
+  isOrderBookModalVisible,
+  isFillOrderProcessing
 })

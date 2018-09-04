@@ -1,5 +1,6 @@
 export const ACCOUNT = 'ACCOUNT'
 export const WALLET = 'WALLET'
+export const DESTROY_ACCOUNT = 'DESTROY_ACCOUNT'
 
 export const logIn = (account) => async (dispatch, getState) => {
   dispatch(updateAccount(account))
@@ -37,6 +38,6 @@ export const logOut = () => (dispatch, getState) => {
 }
 
 export const destroyAccount = () => ({
-  type: ACCOUNT,
+  type: DESTROY_ACCOUNT,
   data: { account: null }
 })
