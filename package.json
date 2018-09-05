@@ -24,6 +24,7 @@
     "dotenv": "4.0.0",
     "dotenv-expand": "4.2.0",
     "edge-login-ui-web": "^0.4.3",
+    "electron-is-dev": "^0.3.0",
     "eslint": "4.18.0",
     "eslint-config-react-app": "^2.1.0",
     "eslint-loader": "1.9.0",
@@ -67,10 +68,15 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js --env=jsdom"
+    "test": "node scripts/test.js --env=jsdom",
+    "electron-dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3007 && electron .\""    
   },
+  "main": "public/electron.js",
   "devDependencies": {
     "awesome-typescript-loader": "^5.2.0",
+    "concurrently": "^4.0.1",
+    "electron": "^2.0.8",
+    "electron-builder": "^20.28.3",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-node": "^7.0.1",
     "eslint-plugin-promise": "^4.0.0",
@@ -78,7 +84,8 @@
     "eslint-plugin-standard": "^4.0.0",
     "node-sass": "^4.9.0",
     "sass-loader": "^7.0.3",
-    "source-map-loader": "^0.2.4"
+    "source-map-loader": "^0.2.4",
+    "wait-on": "^3.0.1"
   },
   "jest": {
     "collectCoverageFrom": [
