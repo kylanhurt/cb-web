@@ -81,7 +81,8 @@ export class SubmitBuyOrderComponent extends Component {
       outputCurrencyFiatRate,
       isoFiatCurrencyCode,
       isOrderFormProcessing,
-      orderFormFeedback
+      orderFormFeedback,
+      orderFormProcessingButtonTitle
     } = this.props
     const { inputFiatAmountEstimate, outputFiatAmountEstimate } = this.state
     let alertClass = ''
@@ -167,7 +168,7 @@ export class SubmitBuyOrderComponent extends Component {
           </div>
           <div className='centered-form-buttons form-row'>
             <button className='btn btn-secondary btn-lg' style={{ width: 200 }} type='button'>{strings.clear}</button>
-            <button className='btn btn-primary btn-lg' style={{ width: 200 }} disabled={!account || isOrderFormProcessing} type='submit'>{isOrderFormProcessing ? 'Processing...' : strings.submit}</button>
+            <button className='btn btn-primary btn-lg' style={{ width: 200 }} disabled={!account || isOrderFormProcessing} type='submit'>{orderFormProcessingButtonTitle}</button>
           </div>
         </form>
       </div>

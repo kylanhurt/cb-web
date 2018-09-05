@@ -5,6 +5,12 @@ const s = {
   confirm: 'Confirm',
   clear: 'Clear',
   cancel: 'Cancel',
+  processing: 'Processing...',
+  getting_addresses: 'Getting Addresses...',
+  setting_allowance: 'Setting Allowance...',
+  getting_fees: 'Getting Fees...',
+  signing: 'Signing...',
+  submitting: 'Submitting...',
 
   submit_order_success: 'Your order has been successfully submitted with order hash: %s',
 

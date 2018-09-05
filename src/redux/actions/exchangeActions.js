@@ -18,7 +18,9 @@ export const OUTPUT_CURRENCY_CODE = 'OUTPUT_CURRENCY_CODE'
 export const INPUT_CURRENCY_FIAT_RATE = 'UPDATE_INPUT_CURRENCY_FIAT_RATE'
 export const OUTPUT_CURRENCY_FIAT_RATE = 'UPDATE_OUTPUT_CURRENCY_FIAT_RATE'
 export const SHAPESHIFT_EXCHANGE_RATES = 'SHAPESHIFT_EXCHANGE_RATES'
-export const ORDER_FORM_PROCESSING = 'ORDER_FORM_PROCESSING'
+export const START_ORDER_FORM_PROCESSING = 'START_ORDER_FORM_PROCESSING'
+export const STOP_ORDER_FORM_PROCESSING = 'STOP_ORDER_FORM_PROCESSING'
+export const ORDER_FORM_BUTTON_TITLE = 'ORDER_FORM_BUTTON_TITLE'
 export const ORDER_FORM_FEEDBACK = 'ORDER_FORM_FEEDBACK'
 export const ORDER_BOOK = 'ORDER_BOOK'
 export const SELECTED_ORDER = 'SELECTED_ORDER'
@@ -55,7 +57,7 @@ export const submitOrder = (order) => async (dispatch, getState) => {
     outputCurrencyCode
   } = order
   try {
-    dispatch(updateOrderFormProcessing(true))
+    dispatch(startOrderFormProcessing())
     const state = getState()
     startWeb3Engine(state)
     const ids = Object.getOwnPropertyNames(state.wallets)
@@ -79,6 +81,7 @@ export const submitOrder = (order) => async (dispatch, getState) => {
     const EXCHANGE_CONTRACT_ADDRESS = zeroEx.exchange.getContractAddress()
     const makerAddress = accounts[0].toLowerCase()
     console.log('setMakerAllowTxHash')
+    dispatch(updateOrderFormButtonTitle(strings.setting_allowance))
     const setMakerAllowTxHash = await zeroEx.token.setUnlimitedProxyAllowanceAsync(SELL_TOKEN_CONTRACT_ADDRESS, makerAddress)
     await zeroEx.awaitTransactionMinedAsync(setMakerAllowTxHash)
     console.log('setMakerAllowTxHash has been set, hash is: ', setMakerAllowTxHash)
@@ -113,18 +116,41 @@ export const submitOrder = (order) => async (dispatch, getState) => {
     }
     await relayerClient.submitOrderAsync(signedOrder)
     console.log('order submitted to relayer, signedOrder is: ', signedOrder)
-    const orderbookRequest = {
-      baseTokenAddress: SELL_TOKEN_CONTRACT_ADDRESS,
-      quoteTokenAddress: BUY_TOKEN_CONTRACT_ADDRESS
-    }
-    const orderbookResponse = await relayerClient.getOrderbookAsync(orderbookRequest)
-    console.log('DEX: orderbookResponse is: ', orderbookResponse)
     dispatch(updateOrderFormFeedback(sprintf(strings.submit_order_success, orderHash), 'success'))
   } catch (e) {
     console.log('error: ', e)
     dispatch(updateOrderFormFeedback(e.message, 'danger'))
   }
-  dispatch(updateOrderFormProcessing(false))
+  dispatch(stopOrderFormProcessing())
+}
+
+export const startOrderFormProcessing = () => {
+  return {
+    type: START_ORDER_FORM_PROCESSING
+  }
+}
+
+export const stopOrderFormProcessing = () => {
+  return {
+    type: STOP_ORDER_FORM_PROCESSING
+  }
+}
+
+export const updateOrderFormButtonTitle = (orderFormProcessingButtonTitle) => {
+  return {
+    type: ORDER_FORM_BUTTON_TITLE,
+    data: { orderFormProcessingButtonTitle }
+  }
+}
+
+export const updateOrderFormFeedback = (message: string, type: string) => {
+  return {
+    type: ORDER_FORM_FEEDBACK,
+    data: {
+      message,
+      type
+    }
+  }
 }
 
 export const fetchExchangeRates = () => async (dispatch) => {
@@ -189,23 +215,6 @@ export const updateOutputCurrencyCode = (outputCurrencyCode: string) => async (d
     type: OUTPUT_CURRENCY_FIAT_RATE,
     data: { outputCurrencyFiatRate }
   })
-}
-
-export const updateOrderFormProcessing = (isOrderFormProcessing: boolean) => {
-  return {
-    type: ORDER_FORM_PROCESSING,
-    data: { isOrderFormProcessing }
-  }
-}
-
-export const updateOrderFormFeedback = (message: string, type: string) => {
-  return {
-    type: ORDER_FORM_FEEDBACK,
-    data: {
-      message,
-      type
-    }
-  }
 }
 
 export const fetchDexOrderBook = () => async (dispatch, getState) => {

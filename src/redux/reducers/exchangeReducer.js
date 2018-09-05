@@ -4,7 +4,9 @@ import {
   OUTPUT_CURRENCY_CODE,
   OUTPUT_CURRENCY_FIAT_RATE,
   SHAPESHIFT_EXCHANGE_RATES,
-  ORDER_FORM_PROCESSING,
+  START_ORDER_FORM_PROCESSING,
+  STOP_ORDER_FORM_PROCESSING,
+  ORDER_FORM_BUTTON_TITLE,
   ORDER_FORM_FEEDBACK,
   ORDER_BOOK,
   SELECTED_ORDER,
@@ -12,6 +14,7 @@ import {
   FILL_ORDER_PROCESSING
 } from '../actions/exchangeActions.js'
 import { combineReducers } from 'redux'
+import strings from '../../locales/default.js'
 
 export const shapeshiftExchangeRates = (state = [], action) => {
   const { data } = action
@@ -64,10 +67,25 @@ export const outputCurrencyFiatRate = (state = null, action) => {
 }
 
 export const isOrderFormProcessing = (state = false, action) => {
+  switch (action.type) {
+    case START_ORDER_FORM_PROCESSING:
+      return true
+    case STOP_ORDER_FORM_PROCESSING:
+      return false
+    default:
+      return state
+  }
+}
+
+export const orderFormProcessingButtonTitle = (state = strings.submit, action) => {
   const { data } = action
   switch (action.type) {
-    case ORDER_FORM_PROCESSING:
-      return data.isOrderFormProcessing
+    case ORDER_FORM_BUTTON_TITLE:
+      return data.orderFormProcessingButtonTitle
+    case START_ORDER_FORM_PROCESSING:
+      return strings.processing
+    case STOP_ORDER_FORM_PROCESSING:
+      return strings.submit
     default:
       return state
   }
@@ -144,5 +162,6 @@ export const exchange = combineReducers({
   isOrderFormProcessing,
   orderFormFeedback,
   isOrderBookModalVisible,
-  isFillOrderProcessing
+  isFillOrderProcessing,
+  orderFormProcessingButtonTitle
 })

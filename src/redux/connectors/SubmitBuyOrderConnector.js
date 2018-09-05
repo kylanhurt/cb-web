@@ -18,7 +18,9 @@ const mapStateToProps = (state) => ({
   outputCurrencyFiatRate: state.exchange.outputCurrencyFiatRate,
   isoFiatCurrencyCode: state.settings.isoFiatCurrencyCode,
   isOrderFormProcessing: state.exchange.isOrderFormProcessing,
-  orderFormFeedback: state.exchange.orderFormFeedback
+  orderFormFeedback: state.exchange.orderFormFeedback,
+  orderFormProcessingButtonTitle: state.exchange.orderFormProcessingButtonTitle
+
 })
 
 const mapDispatchToProps = (dispatch) => {
