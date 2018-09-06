@@ -25,7 +25,9 @@ export const ORDER_FORM_FEEDBACK = 'ORDER_FORM_FEEDBACK'
 export const ORDER_BOOK = 'ORDER_BOOK'
 export const SELECTED_ORDER = 'SELECTED_ORDER'
 export const ORDER_BOOK_MODAL_VISIBILITY = 'ORDER_BOOK_MODAL_VISIBILITY'
-export const FILL_ORDER_PROCESSING = 'FILL_ORDER_PROCESSING'
+export const START_FILL_ORDER_PROCESSING = 'START_FILL_ORDER_PROCESSING'
+export const STOP_FILL_ORDER_PROCESSING = 'STOP_FILL_ORDER_PROCESSING'
+export const FILL_ORDER_BUTTON_TITLE = 'FILL_ORDER_BUTTON_TITLE'
 const SHAPESHIFT_RATE_ENDPOINT = 'https://shapeshift.io/rate/'
 const CRYPTOCOMPARE_ENDPOINT = 'https://min-api.cryptocompare.com/data/price'
 const ZRX_TOKEN_ADDRESS = '0xe41d2489571d322189246dafa5ebde1f4699f498'.toLowerCase()
@@ -254,6 +256,7 @@ export function updateDexOrderBook (orderBook) {
 
 export const selectOrder = (orderHash) => (dispatch, getState) => {
   const state = getState()
+  if (!state.account) return
   const orderBook = state.exchange.orderBook
   const combinedOrderBook = [...orderBook.asks, ...orderBook.bids]
   let selectedOrder = combinedOrderBook.find(order => orderHash === order.orderHash)
@@ -273,7 +276,7 @@ export const updateOrderBookModalVisibility = (isVisible) => {
 }
 
 export const fillOrder = () => async (dispatch, getState) => {
-  dispatch(updateFillOrderProcessing(true))
+  dispatch(startFillOrderProcessing())
   try {
     const state = getState()
     const ids = Object.getOwnPropertyNames(state.wallets)
@@ -287,6 +290,7 @@ export const fillOrder = () => async (dispatch, getState) => {
 
     const accounts = await web3Wrapper.getAvailableAddressesAsync()
     const takerAddress = accounts[0].toLowerCase() // own address
+    dispatch(updateFillOrderButtonTitle(strings.setting_allowance))
     const allowanceAmount = await zeroEx.token.getProxyAllowanceAsync(TAKER_CONTRACT_ADDRESS, takerAddress)
     console.log('DEX: allowanceAmount is: ', allowanceAmount)
     if (allowanceAmount.lt(order.takerTokenAmount)) {
@@ -304,6 +308,7 @@ export const fillOrder = () => async (dispatch, getState) => {
     console.log('DEX: orderHash is: ', orderHash)
     // Signing orderHash -> ecSignature
     const shouldAddPersonalMessagePrefix = false
+    dispatch(updateFillOrderButtonTitle(strings.signing))
     const ecSignature = await zeroEx.signOrderHashAsync(orderHash, takerAddress, shouldAddPersonalMessagePrefix)
     console.log('DEX: ecSignature is: ', ecSignature)
 
@@ -324,17 +329,31 @@ export const fillOrder = () => async (dispatch, getState) => {
       takerAddress
     )
     console.log('DEX: fillTxHash is: ', fillTxHash)
+    dispatch(updateFillOrderButtonTitle(strings.mining_transaction))
     const txReceipt = await zeroEx.awaitTransactionMinedAsync(fillTxHash)
     console.log('DEX: order fulfillment transaction completed!, txReceipt is: ', txReceipt)
+    dispatch(updateOrderBookModalVisibility(false))
   } catch (e) {
     console.log('DEX Order Fill error', e)
   }
-  dispatch(updateFillOrderProcessing(false))
+  dispatch(stopFillOrderProcessing())
 }
 
-export const updateFillOrderProcessing = (isProcessing) => {
+export const startFillOrderProcessing = () => {
   return {
-    type: FILL_ORDER_PROCESSING,
-    data: { isProcessing }
+    type: START_FILL_ORDER_PROCESSING
+  }
+}
+
+export const stopFillOrderProcessing = () => {
+  return {
+    type: STOP_FILL_ORDER_PROCESSING
+  }
+}
+
+export const updateFillOrderButtonTitle = (fillOrderProcessingButtonTitle) => {
+  return {
+    type: FILL_ORDER_BUTTON_TITLE,
+    data: { fillOrderProcessingButtonTitle }
   }
 }

@@ -20,7 +20,8 @@ const s = {
   order_book_price: 'Price',
   order_book_modal_fill: 'Fill Order',
   order_book_modal_dialog_fragment_1: 'You are about to exchange',
-  order_book_modal_fialog_fragment_2: 'for'
+  order_book_modal_fialog_fragment_2: 'for',
+  mining_transaction: 'Mining Transaction...'
 }
 
 export default s

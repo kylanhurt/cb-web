@@ -23,8 +23,8 @@ export class OrderBookComponent extends Component {
       outputCurrencyInfo,
       outputCurrencyFiatRate,
       isoFiatCurrencyCode,
-      selectOrder,
-      isOrderBookModalVisible
+      isOrderBookModalVisible,
+      selectOrder
     } = this.props
     const fiatCurrencySymbol = getSymbolFromCurrency(isoFiatCurrencyCode)
     return (

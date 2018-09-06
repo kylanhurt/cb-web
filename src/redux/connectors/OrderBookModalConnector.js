@@ -18,7 +18,8 @@ const mapStateToProps = (state) => {
     outputCurrencyInfo,
     outputCurrencyFiatRate: state.exchange.outputCurrencyFiatRate,
     isOrderBookModalVisible: state.exchange.isOrderBookModalVisible,
-    isoFiatCurrencyCode: state.settings.isoFiatCurrencyCode
+    isoFiatCurrencyCode: state.settings.isoFiatCurrencyCode,
+    fillOrderProcessingButtonTitle: state.exchange.fillOrderProcessingButtonTitle
   }
 }
 

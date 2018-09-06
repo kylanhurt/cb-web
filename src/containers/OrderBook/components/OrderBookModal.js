@@ -37,7 +37,7 @@ export class OrderBookModalComponent extends Component {
   }
 
   render () {
-    const { isOrderBookModalVisible, selectedOrder, fillOrder } = this.props
+    const { isOrderBookModalVisible, selectedOrder, fillOrder, fillOrderProcessingButtonTitle, isFillOrderProcessing } = this.props
 
     return (
       <div>
@@ -49,8 +49,8 @@ export class OrderBookModalComponent extends Component {
             {selectedOrder && this.renderOrderInfo()}
           </div>
           <div className='modal__footer'>
-            <button className='btn btn-secondary btn-lg' type='button'>{strings.cancel}</button>
-            <button className='btn btn-primary btn-lg' onClick={fillOrder} disabled={false} type='submit'>{strings.confirm}</button>
+            <button className='btn btn-secondary btn-lg' style={{ width: '260px' }} type='button'>{strings.cancel}</button><br />
+            <button className='btn btn-primary btn-lg' style={{ width: '260px' }} onClick={fillOrder} disabled={isFillOrderProcessing} type='submit'>{fillOrderProcessingButtonTitle}</button>
           </div>
         </Modal>
       </div>

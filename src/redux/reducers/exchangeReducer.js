@@ -11,7 +11,9 @@ import {
   ORDER_BOOK,
   SELECTED_ORDER,
   ORDER_BOOK_MODAL_VISIBILITY,
-  FILL_ORDER_PROCESSING
+  START_FILL_ORDER_PROCESSING,
+  STOP_FILL_ORDER_PROCESSING,
+  FILL_ORDER_BUTTON_TITLE
 } from '../actions/exchangeActions.js'
 import { combineReducers } from 'redux'
 import strings from '../../locales/default.js'
@@ -144,8 +146,24 @@ export const isOrderBookModalVisible = (state = false, action) => {
 
 export const isFillOrderProcessing = (state = false, action) => {
   switch (action.type) {
-    case FILL_ORDER_PROCESSING:
-      return action.data.isProcessing
+    case START_FILL_ORDER_PROCESSING:
+      return true
+    case STOP_FILL_ORDER_PROCESSING:
+      return false
+    default:
+      return state
+  }
+}
+
+export const fillOrderProcessingButtonTitle = (state = strings.confirm, action) => {
+  const { data } = action
+  switch (action.type) {
+    case FILL_ORDER_BUTTON_TITLE:
+      return data.fillOrderProcessingButtonTitle
+    case START_FILL_ORDER_PROCESSING:
+      return strings.processing
+    case STOP_FILL_ORDER_PROCESSING:
+      return strings.submit
     default:
       return state
   }
@@ -160,8 +178,9 @@ export const exchange = combineReducers({
   orderBook,
   selectedOrder,
   isOrderFormProcessing,
+  orderFormProcessingButtonTitle,
   orderFormFeedback,
   isOrderBookModalVisible,
   isFillOrderProcessing,
-  orderFormProcessingButtonTitle
+  fillOrderProcessingButtonTitle
 })
