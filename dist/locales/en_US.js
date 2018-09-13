@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const s = {
     // submit order form
     not_applicable: 'n/a',
@@ -21,4 +23,5 @@ const s = {
     order_book_modal_fialog_fragment_2: 'for',
     mining_transaction: 'Mining Transaction...'
 };
-export default s;
+exports.default = s;
+//# sourceMappingURL=en_US.js.map

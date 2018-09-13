@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -6,15 +7,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import React, { PureComponent } from 'react';
-import { connect } from 'react-redux';
-import SidebarLink from './SidebarLink';
-import SidebarCategory from './SidebarCategory';
-import { changeThemeToDark, changeThemeToLight } from '../../../redux/actions/themeActions';
-import { makeEdgeUiContext } from 'edge-login-ui-web';
-import { logIn, logOut } from '../../../redux/actions/accountActions.js';
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = require("react");
+const react_redux_1 = require("react-redux");
+const SidebarLink_1 = require("./SidebarLink");
+const SidebarCategory_1 = require("./SidebarCategory");
+const themeActions_1 = require("../../../redux/actions/themeActions");
+const edge_login_ui_web_1 = require("edge-login-ui-web");
+const accountActions_js_1 = require("../../../redux/actions/accountActions.js");
 let edgeContext; // : EdgeUiContext
-makeEdgeUiContext({
+edge_login_ui_web_1.makeEdgeUiContext({
     apiKey: 'aac3421135575c7433551969b28f72c5b74d7b78',
     appId: 'com.CaptainsRelay.www',
     appName: 'CaptainsRelay'
@@ -22,7 +24,7 @@ makeEdgeUiContext({
     edgeContext = context;
     console.log('context is: ', context);
 }));
-class SidebarContent extends PureComponent {
+class SidebarContent extends react_1.PureComponent {
     constructor() {
         super(...arguments);
         this.changeToDark = () => {
@@ -57,21 +59,21 @@ class SidebarContent extends PureComponent {
         const onPressAccount = account ? logOut : this.openLogin;
         return (<div className='sidebar__content'>
         <ul className='sidebar__block'>
-          <SidebarLink title={accountOptionSyntax} icon='exit' onClick={onPressAccount}/>
-          <SidebarCategory title='Layout' icon='layers'>
+          <SidebarLink_1.default title={accountOptionSyntax} icon='exit' onClick={onPressAccount}/>
+          <SidebarCategory_1.default title='Layout' icon='layers'>
             <li className='sidebar__link' onClick={this.changeToLight}>
               <p className='sidebar__link-title'>Light Theme</p>
             </li>
             <li className='sidebar__link' onClick={this.changeToDark}>
               <p className='sidebar__link-title'>Dark Theme</p>
             </li>
-          </SidebarCategory>
+          </SidebarCategory_1.default>
         </ul>
         <ul className='sidebar__block'>
-          <SidebarCategory title='Example Pages' icon='diamond'>
-            <SidebarLink title='Page one' route='/pages/one' onClick={this.hideSidebar}/>
-            <SidebarLink title='Page two' route='/pages/two' onClick={this.hideSidebar}/>
-          </SidebarCategory>
+          <SidebarCategory_1.default title='Example Pages' icon='diamond'>
+            <SidebarLink_1.default title='Page one' route='/pages/one' onClick={this.hideSidebar}/>
+            <SidebarLink_1.default title='Page two' route='/pages/two' onClick={this.hideSidebar}/>
+          </SidebarCategory_1.default>
         </ul>
       </div>);
     }
@@ -80,9 +82,10 @@ const mapStateToProps = (state) => ({
     account: state.account
 });
 const mapDispatchToProps = (dispatch) => ({
-    logOut: () => dispatch(logOut()),
-    logIn: (account) => dispatch(logIn(account)),
-    changeThemeToDark: () => dispatch(changeThemeToDark()),
-    changeThemeToLight: () => dispatch(changeThemeToLight())
+    logOut: () => dispatch(accountActions_js_1.logOut()),
+    logIn: (account) => dispatch(accountActions_js_1.logIn(account)),
+    changeThemeToDark: () => dispatch(themeActions_1.changeThemeToDark()),
+    changeThemeToLight: () => dispatch(themeActions_1.changeThemeToLight())
 });
-export const SidebarContentConnector = connect(mapStateToProps, mapDispatchToProps)(SidebarContent);
+exports.SidebarContentConnector = react_redux_1.connect(mapStateToProps, mapDispatchToProps)(SidebarContent);
+//# sourceMappingURL=SidebarContent.js.map

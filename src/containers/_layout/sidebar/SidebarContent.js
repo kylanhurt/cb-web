@@ -81,7 +81,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   logOut: () => dispatch(logOut()),
-  logIn: (account: any) => dispatch(logIn(account)),
+  logIn: (account) => dispatch(logIn(account)),
   changeThemeToDark: () => dispatch(changeThemeToDark()),
   changeThemeToLight: () => dispatch(changeThemeToLight())
 })

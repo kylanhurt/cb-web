@@ -1,7 +1,9 @@
-import React, { PureComponent } from 'react';
-import TextField from '@material-ui/core/TextField';
-import SearchIcon from 'mdi-react/SearchIcon';
-export default class TopbarSearch extends PureComponent {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = require("react");
+const TextField_1 = require("@material-ui/core/TextField");
+const SearchIcon_1 = require("mdi-react/SearchIcon");
+class TopbarSearch extends react_1.PureComponent {
     constructor(props) {
         super(props);
         this.state = { inputOpen: false };
@@ -13,10 +15,12 @@ export default class TopbarSearch extends PureComponent {
     }
     render() {
         return (<form className='topbar__search material-form'>
-        <TextField className={`material-form__field topbar__search-field${this.state.inputOpen ? ' topbar__search-field--open' : ''}`}/>
+        <TextField_1.default className={`material-form__field topbar__search-field${this.state.inputOpen ? ' topbar__search-field--open' : ''}`}/>
         <button className='topbar__btn' onClick={this.onInputOpen}>
-          <SearchIcon />
+          <SearchIcon_1.default />
         </button>
       </form>);
     }
 }
+exports.default = TopbarSearch;
+//# sourceMappingURL=TopbarSearch.js.map

@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -6,10 +7,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import React, { PureComponent } from 'react';
-import { makeEdgeUiContext } from 'edge-login-ui-web';
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = require("react");
+const edge_login_ui_web_1 = require("edge-login-ui-web");
 let edgeContext; // : EdgeUiContext
-makeEdgeUiContext({
+edge_login_ui_web_1.makeEdgeUiContext({
     apiKey: 'aac3421135575c7433551969b28f72c5b74d7b78',
     appId: 'com.kylan.whatever',
     appName: 'CaptainsRelay'
@@ -17,7 +19,7 @@ makeEdgeUiContext({
     edgeContext = context;
     console.log('context is: ', context);
 }));
-export default class LogIn extends PureComponent {
+class LogIn extends react_1.PureComponent {
     constructor(props) {
         super(props);
         this.onClick = () => {
@@ -37,5 +39,7 @@ export default class LogIn extends PureComponent {
         return <button onClick={this.onClick}>Log in with Edge</button>;
     }
 }
+exports.default = LogIn;
 // if you want to add select, date-picker and time-picker in your app you need to uncomment the first
 // four lines in /scss/components/form.scss to add styles
+//# sourceMappingURL=LogIn.js.map

@@ -1,6 +1,8 @@
-import { PureComponent } from 'react';
-import { withRouter } from 'react-router-dom';
-class ScrollToTop extends PureComponent {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = require("react");
+const react_router_dom_1 = require("react-router-dom");
+class ScrollToTop extends react_1.PureComponent {
     componentDidUpdate(prevProps) {
         if (this.props.location !== prevProps.location) {
             window.scrollTo(0, 0);
@@ -10,4 +12,5 @@ class ScrollToTop extends PureComponent {
         return this.props.children;
     }
 }
-export default withRouter(ScrollToTop);
+exports.default = react_router_dom_1.withRouter(ScrollToTop);
+//# sourceMappingURL=ScrollToTop.js.map

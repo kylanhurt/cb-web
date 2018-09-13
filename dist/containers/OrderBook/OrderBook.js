@@ -1,38 +1,40 @@
-import React, { Component } from 'react';
-import { ZeroEx } from '0x.js';
-import Table from '../../components/table/Table.js';
-import strings from '../../locales/default.js';
-import { getSymbolFromCurrency } from '../../constants/currencyConstants.js';
-import { sprintf } from 'sprintf-js';
-import { OrderBookModalConnector } from '../../redux/connectors/OrderBookModalConnector.js';
-export class OrderBookComponent extends Component {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = require("react");
+const _0x_js_1 = require("0x.js");
+const Table_js_1 = require("../../components/table/Table.js");
+const default_js_1 = require("../../locales/default.js");
+const currencyConstants_js_1 = require("../../constants/currencyConstants.js");
+const sprintf_js_1 = require("sprintf-js");
+const OrderBookModalConnector_js_1 = require("../../redux/connectors/OrderBookModalConnector.js");
+class OrderBookComponent extends react_1.Component {
     constructor(props) {
         super(props);
         this.state = {};
     }
     render() {
         const { asks, inputCurrencyCode, inputCurrencyInfo, inputCurrencyFiatRate, outputCurrencyCode, outputCurrencyInfo, outputCurrencyFiatRate, isoFiatCurrencyCode, isOrderBookModalVisible, selectOrder } = this.props;
-        const fiatCurrencySymbol = getSymbolFromCurrency(isoFiatCurrencyCode);
+        const fiatCurrencySymbol = currencyConstants_js_1.getSymbolFromCurrency(isoFiatCurrencyCode);
         return (<div>
         <div className='card__title'>
-          <h5 className='bold-text'>{sprintf(strings.order_book_view_pending_orders, outputCurrencyCode, inputCurrencyCode)}</h5>
+          <h5 className='bold-text'>{sprintf_js_1.sprintf(default_js_1.default.order_book_view_pending_orders, outputCurrencyCode, inputCurrencyCode)}</h5>
         </div>
-        <Table hover response>
+        <Table_js_1.default hover response>
           <thead>
             <tr>
-              <th style={{ textAlign: 'right' }}>{`${strings.order_book_amount} ${outputCurrencyCode}`}</th>
+              <th style={{ textAlign: 'right' }}>{`${default_js_1.default.order_book_amount} ${outputCurrencyCode}`}</th>
               <th style={{ textAlign: 'right' }}>USD</th>
-              <th style={{ textAlign: 'right' }}>{`${strings.order_book_amount} ${inputCurrencyCode}`}</th>
+              <th style={{ textAlign: 'right' }}>{`${default_js_1.default.order_book_amount} ${inputCurrencyCode}`}</th>
               <th style={{ textAlign: 'right' }}>USD</th>
-              <th style={{ textAlign: 'right' }}>{strings.order_book_price}</th>
+              <th style={{ textAlign: 'right' }}>{default_js_1.default.order_book_price}</th>
             </tr>
           </thead>
           <tbody>
             {asks.map(order => {
-            const inputAmount = ZeroEx.toUnitAmount(order.takerTokenAmount, inputCurrencyInfo.decimal);
+            const inputAmount = _0x_js_1.ZeroEx.toUnitAmount(order.takerTokenAmount, inputCurrencyInfo.decimal);
             const inputFiatAmountEstimate = inputAmount * inputCurrencyFiatRate;
             const inputEstimate = inputFiatAmountEstimate ? `${fiatCurrencySymbol} ${inputFiatAmountEstimate.toFixed(2)}` : '';
-            const outputAmount = ZeroEx.toUnitAmount(order.makerTokenAmount, outputCurrencyInfo.decimal);
+            const outputAmount = _0x_js_1.ZeroEx.toUnitAmount(order.makerTokenAmount, outputCurrencyInfo.decimal);
             const outputFiatAmountEstimate = outputAmount * outputCurrencyFiatRate;
             const outputEstimate = outputFiatAmountEstimate ? `${fiatCurrencySymbol} ${outputFiatAmountEstimate.toFixed(2)}` : '';
             const price = outputAmount / inputAmount;
@@ -45,8 +47,10 @@ export class OrderBookComponent extends Component {
                 </tr>);
         })}
           </tbody>
-        </Table>
-        {isOrderBookModalVisible && <OrderBookModalConnector />}
+        </Table_js_1.default>
+        {isOrderBookModalVisible && <OrderBookModalConnector_js_1.OrderBookModalConnector />}
       </div>);
     }
 }
+exports.OrderBookComponent = OrderBookComponent;
+//# sourceMappingURL=OrderBook.js.map

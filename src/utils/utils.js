@@ -1,5 +1,5 @@
 
-export const ellipsizeString = (input: string, length: number): string => {
+export const ellipsizeString = (input, length) => {
   const inputLength = input.length
   const halfway = length / 2
   const firstHalf = input.slice(0, halfway)

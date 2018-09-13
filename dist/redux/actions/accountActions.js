@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -6,43 +7,45 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-export const ACCOUNT = 'ACCOUNT';
-export const WALLET = 'WALLET';
-export const DESTROY_ACCOUNT = 'DESTROY_ACCOUNT';
-export const logIn = (account) => (dispatch, getState) => __awaiter(this, void 0, void 0, function* () {
-    dispatch(updateAccount(account));
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ACCOUNT = 'ACCOUNT';
+exports.WALLET = 'WALLET';
+exports.DESTROY_ACCOUNT = 'DESTROY_ACCOUNT';
+exports.logIn = (account) => (dispatch, getState) => __awaiter(this, void 0, void 0, function* () {
+    dispatch(exports.updateAccount(account));
     const firstWallet = account.getFirstWalletInfo('wallet:ethereum');
     if (firstWallet == null) {
         account.createCurrencyWallet('wallet:ethereum')
             .then(wallet => {
-            dispatch(updateWallet(wallet));
+            dispatch(exports.updateWallet(wallet));
         })
             .catch((e) => {
             console.log('logIn error: ', e);
         });
     }
     else {
-        dispatch(updateWallet(firstWallet));
+        dispatch(exports.updateWallet(firstWallet));
     }
 });
-export const updateAccount = (account) => ({
-    type: ACCOUNT,
+exports.updateAccount = (account) => ({
+    type: exports.ACCOUNT,
     data: { account }
 });
-export const updateWallet = (wallet) => {
+exports.updateWallet = (wallet) => {
     return {
-        type: WALLET,
+        type: exports.WALLET,
         data: { wallet }
     };
 };
-export const logOut = () => (dispatch, getState) => {
+exports.logOut = () => (dispatch, getState) => {
     const state = getState();
     const account = state.account;
     if (account)
         account.logout();
-    dispatch(destroyAccount());
+    dispatch(exports.destroyAccount());
 };
-export const destroyAccount = () => ({
-    type: DESTROY_ACCOUNT,
+exports.destroyAccount = () => ({
+    type: exports.DESTROY_ACCOUNT,
     data: { account: null }
 });
+//# sourceMappingURL=accountActions.js.map

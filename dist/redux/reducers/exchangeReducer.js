@@ -1,90 +1,92 @@
-import { INPUT_CURRENCY_CODE, INPUT_CURRENCY_FIAT_RATE, OUTPUT_CURRENCY_CODE, OUTPUT_CURRENCY_FIAT_RATE, SHAPESHIFT_EXCHANGE_RATES, START_ORDER_FORM_PROCESSING, STOP_ORDER_FORM_PROCESSING, ORDER_FORM_BUTTON_TITLE, ORDER_FORM_FEEDBACK, ORDER_BOOK, SELECTED_ORDER, ORDER_BOOK_MODAL_VISIBILITY, START_FILL_ORDER_PROCESSING, STOP_FILL_ORDER_PROCESSING, FILL_ORDER_BUTTON_TITLE } from '../actions/exchangeActions.js';
-import { combineReducers } from 'redux';
-import strings from '../../locales/default.js';
-export const shapeshiftExchangeRates = (state = [], action) => {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const exchangeActions_js_1 = require("../actions/exchangeActions.js");
+const redux_1 = require("redux");
+const default_js_1 = require("../../locales/default.js");
+exports.shapeshiftExchangeRates = (state = [], action) => {
     const { data } = action;
     switch (action.type) {
-        case SHAPESHIFT_EXCHANGE_RATES:
+        case exchangeActions_js_1.SHAPESHIFT_EXCHANGE_RATES:
             return data.shapeshiftExchangeRates;
         default:
             return state;
     }
 };
-export const inputCurrencyCode = (state = '', action) => {
+exports.inputCurrencyCode = (state = '', action) => {
     const { data } = action;
     switch (action.type) {
-        case INPUT_CURRENCY_CODE:
+        case exchangeActions_js_1.INPUT_CURRENCY_CODE:
             return data.inputCurrencyCode;
         default:
             return state;
     }
 };
-export const inputCurrencyFiatRate = (state = null, action) => {
+exports.inputCurrencyFiatRate = (state = null, action) => {
     const { data } = action;
     switch (action.type) {
-        case INPUT_CURRENCY_FIAT_RATE:
+        case exchangeActions_js_1.INPUT_CURRENCY_FIAT_RATE:
             return data.inputCurrencyFiatRate;
         default:
             return state;
     }
 };
-export const outputCurrencyCode = (state = '', action) => {
+exports.outputCurrencyCode = (state = '', action) => {
     const { data } = action;
     switch (action.type) {
-        case OUTPUT_CURRENCY_CODE:
+        case exchangeActions_js_1.OUTPUT_CURRENCY_CODE:
             return data.outputCurrencyCode;
         default:
             return state;
     }
 };
-export const outputCurrencyFiatRate = (state = null, action) => {
+exports.outputCurrencyFiatRate = (state = null, action) => {
     const { data } = action;
     switch (action.type) {
-        case OUTPUT_CURRENCY_FIAT_RATE:
+        case exchangeActions_js_1.OUTPUT_CURRENCY_FIAT_RATE:
             return data.outputCurrencyFiatRate;
         default:
             return state;
     }
 };
-export const isOrderFormProcessing = (state = false, action) => {
+exports.isOrderFormProcessing = (state = false, action) => {
     switch (action.type) {
-        case START_ORDER_FORM_PROCESSING:
+        case exchangeActions_js_1.START_ORDER_FORM_PROCESSING:
             return true;
-        case STOP_ORDER_FORM_PROCESSING:
+        case exchangeActions_js_1.STOP_ORDER_FORM_PROCESSING:
             return false;
         default:
             return state;
     }
 };
-export const orderFormProcessingButtonTitle = (state = strings.submit, action) => {
+exports.orderFormProcessingButtonTitle = (state = default_js_1.default.submit, action) => {
     const { data } = action;
     switch (action.type) {
-        case ORDER_FORM_BUTTON_TITLE:
+        case exchangeActions_js_1.ORDER_FORM_BUTTON_TITLE:
             return data.orderFormProcessingButtonTitle;
-        case START_ORDER_FORM_PROCESSING:
-            return strings.processing;
-        case STOP_ORDER_FORM_PROCESSING:
-            return strings.submit;
+        case exchangeActions_js_1.START_ORDER_FORM_PROCESSING:
+            return default_js_1.default.processing;
+        case exchangeActions_js_1.STOP_ORDER_FORM_PROCESSING:
+            return default_js_1.default.submit;
         default:
             return state;
     }
 };
-export const orderFormFeedback = (state = { message: '', type: null }, action) => {
+exports.orderFormFeedback = (state = { message: '', type: null }, action) => {
     if (!action.data)
         return state;
     const { message, type } = action.data;
     switch (action.type) {
-        case ORDER_FORM_FEEDBACK:
+        case exchangeActions_js_1.ORDER_FORM_FEEDBACK:
             return {
                 message,
                 type
             };
-        case OUTPUT_CURRENCY_CODE:
+        case exchangeActions_js_1.OUTPUT_CURRENCY_CODE:
             return {
                 message: '',
                 type: null
             };
-        case INPUT_CURRENCY_CODE:
+        case exchangeActions_js_1.INPUT_CURRENCY_CODE:
             return {
                 message: '',
                 type: null
@@ -93,65 +95,66 @@ export const orderFormFeedback = (state = { message: '', type: null }, action) =
             return state;
     }
 };
-export const orderBook = (state = [], action) => {
+exports.orderBook = (state = [], action) => {
     switch (action.type) {
-        case ORDER_BOOK:
+        case exchangeActions_js_1.ORDER_BOOK:
             return action.data;
         default:
             return state;
     }
 };
-export const selectedOrder = (state = null, action) => {
+exports.selectedOrder = (state = null, action) => {
     switch (action.type) {
-        case SELECTED_ORDER:
+        case exchangeActions_js_1.SELECTED_ORDER:
             return action.data.selectedOrder;
         default:
             return state;
     }
 };
-export const isOrderBookModalVisible = (state = false, action) => {
+exports.isOrderBookModalVisible = (state = false, action) => {
     switch (action.type) {
-        case ORDER_BOOK_MODAL_VISIBILITY:
+        case exchangeActions_js_1.ORDER_BOOK_MODAL_VISIBILITY:
             return action.data.isVisible;
         default:
             return state;
     }
 };
-export const isFillOrderProcessing = (state = false, action) => {
+exports.isFillOrderProcessing = (state = false, action) => {
     switch (action.type) {
-        case START_FILL_ORDER_PROCESSING:
+        case exchangeActions_js_1.START_FILL_ORDER_PROCESSING:
             return true;
-        case STOP_FILL_ORDER_PROCESSING:
+        case exchangeActions_js_1.STOP_FILL_ORDER_PROCESSING:
             return false;
         default:
             return state;
     }
 };
-export const fillOrderProcessingButtonTitle = (state = strings.confirm, action) => {
+exports.fillOrderProcessingButtonTitle = (state = default_js_1.default.confirm, action) => {
     const { data } = action;
     switch (action.type) {
-        case FILL_ORDER_BUTTON_TITLE:
+        case exchangeActions_js_1.FILL_ORDER_BUTTON_TITLE:
             return data.fillOrderProcessingButtonTitle;
-        case START_FILL_ORDER_PROCESSING:
-            return strings.processing;
-        case STOP_FILL_ORDER_PROCESSING:
-            return strings.submit;
+        case exchangeActions_js_1.START_FILL_ORDER_PROCESSING:
+            return default_js_1.default.processing;
+        case exchangeActions_js_1.STOP_FILL_ORDER_PROCESSING:
+            return default_js_1.default.submit;
         default:
             return state;
     }
 };
-export const exchange = combineReducers({
-    shapeshiftExchangeRates,
-    inputCurrencyCode,
-    inputCurrencyFiatRate,
-    outputCurrencyCode,
-    outputCurrencyFiatRate,
-    orderBook,
-    selectedOrder,
-    isOrderFormProcessing,
-    orderFormProcessingButtonTitle,
-    orderFormFeedback,
-    isOrderBookModalVisible,
-    isFillOrderProcessing,
-    fillOrderProcessingButtonTitle
+exports.exchange = redux_1.combineReducers({
+    shapeshiftExchangeRates: exports.shapeshiftExchangeRates,
+    inputCurrencyCode: exports.inputCurrencyCode,
+    inputCurrencyFiatRate: exports.inputCurrencyFiatRate,
+    outputCurrencyCode: exports.outputCurrencyCode,
+    outputCurrencyFiatRate: exports.outputCurrencyFiatRate,
+    orderBook: exports.orderBook,
+    selectedOrder: exports.selectedOrder,
+    isOrderFormProcessing: exports.isOrderFormProcessing,
+    orderFormProcessingButtonTitle: exports.orderFormProcessingButtonTitle,
+    orderFormFeedback: exports.orderFormFeedback,
+    isOrderBookModalVisible: exports.isOrderBookModalVisible,
+    isFillOrderProcessing: exports.isFillOrderProcessing,
+    fillOrderProcessingButtonTitle: exports.fillOrderProcessingButtonTitle
 });
+//# sourceMappingURL=exchangeReducer.js.map

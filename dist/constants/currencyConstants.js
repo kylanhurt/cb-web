@@ -1,14 +1,16 @@
-export const USD_FIAT = 'iso:USD';
-export const getSymbolFromCurrency = (currencyCode) => {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.USD_FIAT = 'iso:USD';
+exports.getSymbolFromCurrency = (currencyCode) => {
     if (typeof currencyCode !== 'string')
         return '';
     const code = currencyCode.toUpperCase();
     const codeWithoutISO = code.replace('ISO:', '');
-    if (!FIAT_CODES_SYMBOLS.hasOwnProperty(codeWithoutISO))
+    if (!exports.FIAT_CODES_SYMBOLS.hasOwnProperty(codeWithoutISO))
         return '';
-    return FIAT_CODES_SYMBOLS[codeWithoutISO];
+    return exports.FIAT_CODES_SYMBOLS[codeWithoutISO];
 };
-export const FIAT_CODES_SYMBOLS = {
+exports.FIAT_CODES_SYMBOLS = {
     AED: 'د.إ',
     AFN: '؋',
     ALL: 'L',
@@ -168,3 +170,4 @@ export const FIAT_CODES_SYMBOLS = {
     ZAR: 'R',
     ZMW: 'ZK'
 };
+//# sourceMappingURL=currencyConstants.js.map

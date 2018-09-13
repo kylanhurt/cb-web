@@ -1,9 +1,11 @@
-import React, { Component } from 'react';
-import { BigNumber } from '@0xproject/utils';
-import { ellipsizeString } from '../../utils/utils.js';
-import { getSymbolFromCurrency } from '../../constants/currencyConstants.js';
-import strings from '../../locales/default.js';
-export class SubmitBuyOrderComponent extends Component {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = require("react");
+const utils_1 = require("@0xproject/utils");
+const utils_js_1 = require("../../utils/utils.js");
+const currencyConstants_js_1 = require("../../constants/currencyConstants.js");
+const default_js_1 = require("../../locales/default.js");
+class SubmitBuyOrderComponent extends react_1.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = (e) => {
@@ -28,7 +30,7 @@ export class SubmitBuyOrderComponent extends Component {
                 return;
             const { inputCurrencyFiatRate } = this.props;
             let inputFiatAmountEstimate = '';
-            const inputAmount = new BigNumber(event.target.value);
+            const inputAmount = new utils_1.BigNumber(event.target.value);
             if (inputCurrencyFiatRate)
                 inputFiatAmountEstimate = inputAmount.mul(inputCurrencyFiatRate).toFixed(2).toString();
             this.setState({
@@ -42,7 +44,7 @@ export class SubmitBuyOrderComponent extends Component {
                 return;
             const { outputCurrencyFiatRate } = this.props;
             let outputFiatAmountEstimate = '';
-            const outputAmount = new BigNumber(event.target.value);
+            const outputAmount = new utils_1.BigNumber(event.target.value);
             if (outputCurrencyFiatRate)
                 outputFiatAmountEstimate = outputAmount.mul(outputCurrencyFiatRate).toFixed(2).toString();
             this.setState({
@@ -72,7 +74,7 @@ export class SubmitBuyOrderComponent extends Component {
         const { account, tokenDirectory, inputCurrencyCode, inputCurrencyFiatRate, outputCurrencyCode, outputCurrencyFiatRate, isoFiatCurrencyCode, isOrderFormProcessing, orderFormFeedback, orderFormProcessingButtonTitle } = this.props;
         const { inputFiatAmountEstimate, outputFiatAmountEstimate } = this.state;
         let alertClass = '';
-        const fiatCurrencySymbol = getSymbolFromCurrency(isoFiatCurrencyCode);
+        const fiatCurrencySymbol = currencyConstants_js_1.getSymbolFromCurrency(isoFiatCurrencyCode);
         const inputCurrencyFiatRateSyntax = inputCurrencyFiatRate ? `~ ${fiatCurrencySymbol} ${inputCurrencyFiatRate}` : '';
         const inputEstimate = inputFiatAmountEstimate ? `~ ${fiatCurrencySymbol} ${inputFiatAmountEstimate}` : '';
         const outputCurrencyFiatRateSyntax = outputCurrencyFiatRate ? `~ ${fiatCurrencySymbol} ${outputCurrencyFiatRate}` : '';
@@ -93,7 +95,7 @@ export class SubmitBuyOrderComponent extends Component {
                 <option key={null} value={null}>----</option>
                 {tokenDirectory.map((token) => {
             const tokenCode = token.symbol.split(' ');
-            return (<option key={token.symbol} value={token.symbol}>{tokenCode[0]} | {ellipsizeString(token.address, 20).toLowerCase()}</option>);
+            return (<option key={token.symbol} value={token.symbol}>{tokenCode[0]} | {utils_js_1.ellipsizeString(token.address, 20).toLowerCase()}</option>);
         })}
               </select>
             </div>
@@ -123,7 +125,7 @@ export class SubmitBuyOrderComponent extends Component {
                 <option key={null} value={null}>----</option>
                 {tokenDirectory.map((token) => {
             const tokenCode = token.symbol.split(' ');
-            return (<option key={token.symbol} value={token.symbol}>{tokenCode[0]} | {ellipsizeString(token.address, 20).toLowerCase()}</option>);
+            return (<option key={token.symbol} value={token.symbol}>{tokenCode[0]} | {utils_js_1.ellipsizeString(token.address, 20).toLowerCase()}</option>);
         })}
               </select>
             </div>
@@ -147,10 +149,12 @@ export class SubmitBuyOrderComponent extends Component {
             {orderFormFeedback.message && <span>{orderFormFeedback.message}</span>}
           </div>
           <div className='centered-form-buttons form-row'>
-            <button className='btn btn-secondary btn-lg' style={{ width: 200 }} type='button'>{strings.clear}</button>
+            <button className='btn btn-secondary btn-lg' style={{ width: 200 }} type='button'>{default_js_1.default.clear}</button>
             <button className='btn btn-primary btn-lg' style={{ width: 200 }} disabled={!account || isOrderFormProcessing} type='submit'>{orderFormProcessingButtonTitle}</button>
           </div>
         </form>
       </div>);
     }
 }
+exports.SubmitBuyOrderComponent = SubmitBuyOrderComponent;
+//# sourceMappingURL=SubmitBuyOrder.js.map

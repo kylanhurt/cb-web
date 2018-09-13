@@ -1,13 +1,18 @@
 {
   "compilerOptions": {
       "outDir": "./dist",
-      "allowJs": true,
-      "target": "es6"
+      "target": "es6",
+      "moduleResolution": "Node",
+      "module": "commonjs",
+      "sourceMap": true,
+      "noImplicitAny": true,
+      "typeRoots": ["node_modules/@0xproject/typescript-typings/types", "node_modules/@types"],
+      "strictNullChecks": true,
+      "lib": ["es2017"],
+      "skipLibCheck": true,
+      "allowJs": true
   },
   "include": [
-      "./src/**/*"
-  ],
-  "exclude": [
-    "./node_modules/*"
+      "src/**/*"
   ]
 }

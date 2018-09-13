@@ -1,4 +1,6 @@
-export const ellipsizeString = (input, length) => {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ellipsizeString = (input, length) => {
     const inputLength = input.length;
     const halfway = length / 2;
     const firstHalf = input.slice(0, halfway);
@@ -6,7 +8,7 @@ export const ellipsizeString = (input, length) => {
     const output = `${firstHalf}...${secondHalf}`;
     return output;
 };
-export const getTokenInfoFromCurrencyCode = (currencyCode, state) => {
+exports.getTokenInfoFromCurrencyCode = (currencyCode, state) => {
     const tokensDirectory = state.tokens.tokensDirectory;
     if (!tokensDirectory)
         return null;
@@ -15,7 +17,7 @@ export const getTokenInfoFromCurrencyCode = (currencyCode, state) => {
         return null;
     return tokenInfo;
 };
-export const getTokenInfoFromAddress = (address, state) => {
+exports.getTokenInfoFromAddress = (address, state) => {
     const tokensDirectory = state.tokens.tokensDirectory;
     if (!tokensDirectory)
         return null;
@@ -24,3 +26,4 @@ export const getTokenInfoFromAddress = (address, state) => {
         return null;
     return tokenInfo;
 };
+//# sourceMappingURL=utils.js.map

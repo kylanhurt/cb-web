@@ -1,8 +1,10 @@
-import React, { Component } from 'react';
-import 'bootstrap/dist/css/bootstrap.css';
-import '../scss/app.scss';
-import Router from './Router';
-class App extends Component {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = require("react");
+require("bootstrap/dist/css/bootstrap.css");
+require("../scss/app.scss");
+const Router_1 = require("./Router");
+class App extends react_1.Component {
     constructor() {
         super();
         this.state = {
@@ -27,9 +29,10 @@ class App extends Component {
           </div>
         </div>}
         <div>
-          <Router />
+          <Router_1.default />
         </div>
       </div>);
     }
 }
-export default App;
+exports.default = App;
+//# sourceMappingURL=App.js.map

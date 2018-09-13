@@ -1,12 +1,17 @@
-export const CHANGE_SIDEBAR_VISIBILITY = 'CHANGE_SIDEBAR_VISIBILITY';
-export const CHANGE_MOBILE_SIDEBAR_VISIBILITY = 'CHANGE_MOBILE_SIDEBAR_VISIBILITY';
-export function changeSidebarVisibility() {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CHANGE_SIDEBAR_VISIBILITY = 'CHANGE_SIDEBAR_VISIBILITY';
+exports.CHANGE_MOBILE_SIDEBAR_VISIBILITY = 'CHANGE_MOBILE_SIDEBAR_VISIBILITY';
+function changeSidebarVisibility() {
     return {
-        type: CHANGE_SIDEBAR_VISIBILITY
+        type: exports.CHANGE_SIDEBAR_VISIBILITY
     };
 }
-export function changeMobileSidebarVisibility() {
+exports.changeSidebarVisibility = changeSidebarVisibility;
+function changeMobileSidebarVisibility() {
     return {
-        type: CHANGE_MOBILE_SIDEBAR_VISIBILITY
+        type: exports.CHANGE_MOBILE_SIDEBAR_VISIBILITY
     };
 }
+exports.changeMobileSidebarVisibility = changeMobileSidebarVisibility;
+//# sourceMappingURL=sidebarActions.js.map

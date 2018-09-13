@@ -1,5 +1,5 @@
 export const USD_FIAT = 'iso:USD'
-export const getSymbolFromCurrency = (currencyCode: string) => {
+export const getSymbolFromCurrency = (currencyCode) => {
   if (typeof currencyCode !== 'string') return ''
   const code = currencyCode.toUpperCase()
   const codeWithoutISO = code.replace('ISO:', '')

@@ -1,16 +1,20 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-export default class TopbarMenuLinks extends PureComponent {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = require("react");
+const prop_types_1 = require("prop-types");
+const react_router_dom_1 = require("react-router-dom");
+class TopbarMenuLinks extends react_1.PureComponent {
     render() {
-        return (<Link className='topbar__link' to={this.props.path}>
+        return (<react_router_dom_1.Link className='topbar__link' to={this.props.path}>
         <span className={`topbar__link-icon lnr lnr-${this.props.icon}`}/>
         <p className='topbar__link-title'>{this.props.title}</p>
-      </Link>);
+      </react_router_dom_1.Link>);
     }
 }
 TopbarMenuLinks.propTypes = {
-    title: PropTypes.string.isRequired,
-    icon: PropTypes.string.isRequired,
-    path: PropTypes.string.isRequired
+    title: prop_types_1.default.string.isRequired,
+    icon: prop_types_1.default.string.isRequired,
+    path: prop_types_1.default.string.isRequired
 };
+exports.default = TopbarMenuLinks;
+//# sourceMappingURL=TopbarMenuLink.js.map

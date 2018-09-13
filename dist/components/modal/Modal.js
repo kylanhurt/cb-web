@@ -1,7 +1,9 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import { Button, ButtonToolbar, Modal } from 'reactstrap';
-export class ModalComponent extends PureComponent {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = require("react");
+const prop_types_1 = require("prop-types");
+const reactstrap_1 = require("reactstrap");
+class ModalComponent extends react_1.PureComponent {
     constructor(props) {
         super(props);
         this.toggle = () => {
@@ -33,8 +35,8 @@ export class ModalComponent extends PureComponent {
                 break;
         }
         return (<div>
-        <Button color={this.props.color} onClick={this.toggle}>{this.props.btn}</Button>
-        <Modal isOpen={this.state.modal} toggle={this.toggle} className={`modal-dialog--${this.props.color} ${this.props.colored ? 'modal-dialog--colored' : ''} ${this.props.header ? 'modal-dialog--header' : ''}`}>
+        <reactstrap_1.Button color={this.props.color} onClick={this.toggle}>{this.props.btn}</reactstrap_1.Button>
+        <reactstrap_1.Modal isOpen={this.state.modal} toggle={this.toggle} className={`modal-dialog--${this.props.color} ${this.props.colored ? 'modal-dialog--colored' : ''} ${this.props.header ? 'modal-dialog--header' : ''}`}>
           <div className='modal__header'>
             <span className='lnr lnr-cross modal__close-btn' onClick={this.toggle}/>
             {this.props.header ? '' : Icon}
@@ -43,19 +45,21 @@ export class ModalComponent extends PureComponent {
           <div className='modal__body'>
             {this.props.message}
           </div>
-          <ButtonToolbar className='modal__footer'>
-            <Button onClick={this.toggle}>Cancel</Button>{' '}
-            <Button outline={this.props.colored} color={this.props.color} onClick={this.toggle}>Ok</Button>
-          </ButtonToolbar>
-        </Modal>
+          <reactstrap_1.ButtonToolbar className='modal__footer'>
+            <reactstrap_1.Button onClick={this.toggle}>Cancel</reactstrap_1.Button>{' '}
+            <reactstrap_1.Button outline={this.props.colored} color={this.props.color} onClick={this.toggle}>Ok</reactstrap_1.Button>
+          </reactstrap_1.ButtonToolbar>
+        </reactstrap_1.Modal>
       </div>);
     }
 }
 ModalComponent.propTypes = {
-    title: PropTypes.string,
-    message: PropTypes.string,
-    color: PropTypes.string.isRequired,
-    colored: PropTypes.bool,
-    header: PropTypes.bool,
-    btn: PropTypes.string.isRequired
+    title: prop_types_1.default.string,
+    message: prop_types_1.default.string,
+    color: prop_types_1.default.string.isRequired,
+    colored: prop_types_1.default.bool,
+    header: prop_types_1.default.bool,
+    btn: prop_types_1.default.string.isRequired
 };
+exports.ModalComponent = ModalComponent;
+//# sourceMappingURL=Modal.js.map

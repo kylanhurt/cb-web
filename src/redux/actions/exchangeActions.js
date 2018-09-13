@@ -145,7 +145,7 @@ export const updateOrderFormButtonTitle = (orderFormProcessingButtonTitle) => {
   }
 }
 
-export const updateOrderFormFeedback = (message: string, type: string) => {
+export const updateOrderFormFeedback = (message, type) => {
   return {
     type: ORDER_FORM_FEEDBACK,
     data: {
@@ -168,7 +168,7 @@ export const updateShapeshiftExchangeRates = (shapeshiftExchangeRates) => (dispa
   })
 }
 
-export const updateInputCurrencyCode = (inputCurrencyCode: string) => async (dispatch, getState) => {
+export const updateInputCurrencyCode = (inputCurrencyCode) => async (dispatch, getState) => {
   const state = getState()
   const outputCurrencyCode = state.exchange.outputCurrencyCode
   let inputCurrencyFiatRate = null
@@ -193,7 +193,7 @@ export const updateInputCurrencyCode = (inputCurrencyCode: string) => async (dis
   })
 }
 
-export const updateOutputCurrencyCode = (outputCurrencyCode: string) => async (dispatch, getState) => {
+export const updateOutputCurrencyCode = (outputCurrencyCode) => async (dispatch, getState) => {
   const state = getState()
   const inputCurrencyCode = state.exchange.inputCurrencyCode
   let outputCurrencyFiatRate = null

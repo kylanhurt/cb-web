@@ -18,7 +18,7 @@ export class ModalComponent extends PureComponent {
       modal: false
     }
     
-    this.toggle = this.toggle.
+    this.toggle = this.toggle
   }
   
   toggle = () => {

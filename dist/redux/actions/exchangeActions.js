@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -6,70 +7,71 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { NETWORK_ID, RELAYER_ADDRESS, RELAYER_API_URL, RELAYER_SUBPROVIDER_ADDRESS } from '../../constants/networkConstants.js';
-import { BigNumber } from '@0xproject/utils';
-import { Web3ProviderEngine, RPCSubprovider, PrivateKeyWalletSubprovider } from '@0xproject/subproviders';
-import { ZeroEx } from '0x.js';
-import { HttpClient } from '@0xproject/connect';
-import { Web3Wrapper } from '@0xproject/web3-wrapper';
-import { sprintf } from 'sprintf-js';
-import { getTokenInfoFromCurrencyCode } from '../../utils/utils.js';
-import strings from '../../locales/default.js';
-export const INPUT_CURRENCY_CODE = 'INPUT_CURRENCY_CODE';
-export const OUTPUT_CURRENCY_CODE = 'OUTPUT_CURRENCY_CODE';
-export const INPUT_CURRENCY_FIAT_RATE = 'UPDATE_INPUT_CURRENCY_FIAT_RATE';
-export const OUTPUT_CURRENCY_FIAT_RATE = 'UPDATE_OUTPUT_CURRENCY_FIAT_RATE';
-export const SHAPESHIFT_EXCHANGE_RATES = 'SHAPESHIFT_EXCHANGE_RATES';
-export const START_ORDER_FORM_PROCESSING = 'START_ORDER_FORM_PROCESSING';
-export const STOP_ORDER_FORM_PROCESSING = 'STOP_ORDER_FORM_PROCESSING';
-export const ORDER_FORM_BUTTON_TITLE = 'ORDER_FORM_BUTTON_TITLE';
-export const ORDER_FORM_FEEDBACK = 'ORDER_FORM_FEEDBACK';
-export const ORDER_BOOK = 'ORDER_BOOK';
-export const SELECTED_ORDER = 'SELECTED_ORDER';
-export const ORDER_BOOK_MODAL_VISIBILITY = 'ORDER_BOOK_MODAL_VISIBILITY';
-export const START_FILL_ORDER_PROCESSING = 'START_FILL_ORDER_PROCESSING';
-export const STOP_FILL_ORDER_PROCESSING = 'STOP_FILL_ORDER_PROCESSING';
-export const FILL_ORDER_BUTTON_TITLE = 'FILL_ORDER_BUTTON_TITLE';
+Object.defineProperty(exports, "__esModule", { value: true });
+const networkConstants_js_1 = require("../../constants/networkConstants.js");
+const utils_1 = require("@0xproject/utils");
+const subproviders_1 = require("@0xproject/subproviders");
+const _0x_js_1 = require("0x.js");
+const connect_1 = require("@0xproject/connect");
+const web3_wrapper_1 = require("@0xproject/web3-wrapper");
+const sprintf_js_1 = require("sprintf-js");
+const utils_js_1 = require("../../utils/utils.js");
+const default_js_1 = require("../../locales/default.js");
+exports.INPUT_CURRENCY_CODE = 'INPUT_CURRENCY_CODE';
+exports.OUTPUT_CURRENCY_CODE = 'OUTPUT_CURRENCY_CODE';
+exports.INPUT_CURRENCY_FIAT_RATE = 'UPDATE_INPUT_CURRENCY_FIAT_RATE';
+exports.OUTPUT_CURRENCY_FIAT_RATE = 'UPDATE_OUTPUT_CURRENCY_FIAT_RATE';
+exports.SHAPESHIFT_EXCHANGE_RATES = 'SHAPESHIFT_EXCHANGE_RATES';
+exports.START_ORDER_FORM_PROCESSING = 'START_ORDER_FORM_PROCESSING';
+exports.STOP_ORDER_FORM_PROCESSING = 'STOP_ORDER_FORM_PROCESSING';
+exports.ORDER_FORM_BUTTON_TITLE = 'ORDER_FORM_BUTTON_TITLE';
+exports.ORDER_FORM_FEEDBACK = 'ORDER_FORM_FEEDBACK';
+exports.ORDER_BOOK = 'ORDER_BOOK';
+exports.SELECTED_ORDER = 'SELECTED_ORDER';
+exports.ORDER_BOOK_MODAL_VISIBILITY = 'ORDER_BOOK_MODAL_VISIBILITY';
+exports.START_FILL_ORDER_PROCESSING = 'START_FILL_ORDER_PROCESSING';
+exports.STOP_FILL_ORDER_PROCESSING = 'STOP_FILL_ORDER_PROCESSING';
+exports.FILL_ORDER_BUTTON_TITLE = 'FILL_ORDER_BUTTON_TITLE';
 const SHAPESHIFT_RATE_ENDPOINT = 'https://shapeshift.io/rate/';
 const CRYPTOCOMPARE_ENDPOINT = 'https://min-api.cryptocompare.com/data/price';
 const ZRX_TOKEN_ADDRESS = '0xe41d2489571d322189246dafa5ebde1f4699f498'.toLowerCase();
 const providers = {};
 const configs = {
-    networkId: NETWORK_ID
+    networkId: networkConstants_js_1.NETWORK_ID
 };
-export const startWeb3Engine = (state) => {
+exports.startWeb3Engine = (state) => {
     const ids = Object.getOwnPropertyNames(state.wallets);
     const selectedWalletId = ids[0];
     const ethereumKey = state.wallets[selectedWalletId].keys.ethereumKey;
-    const engine = new Web3ProviderEngine();
+    const engine = new subproviders_1.Web3ProviderEngine();
     // add a private key subprovider
-    engine.addProvider(new PrivateKeyWalletSubprovider(ethereumKey));
+    engine.addProvider(new subproviders_1.PrivateKeyWalletSubprovider(ethereumKey));
     // also add an RPC subprovider
-    engine.addProvider(new RPCSubprovider(RELAYER_SUBPROVIDER_ADDRESS));
+    engine.addProvider(new subproviders_1.RPCSubprovider(networkConstants_js_1.RELAYER_SUBPROVIDER_ADDRESS));
     // boot it up
     engine.start();
     providers[selectedWalletId] = engine;
     return providers[selectedWalletId];
 };
-export const submitOrder = (order) => (dispatch, getState) => __awaiter(this, void 0, void 0, function* () {
+exports.submitOrder = (order) => (dispatch, getState) => __awaiter(this, void 0, void 0, function* () {
     const { inputAmount, inputCurrencyCode, outputAmount, outputCurrencyCode } = order;
     try {
-        dispatch(startOrderFormProcessing());
+        dispatch(exports.startOrderFormProcessing());
         const state = getState();
-        startWeb3Engine(state);
+        exports.startWeb3Engine(state);
         const ids = Object.getOwnPropertyNames(state.wallets);
         const selectedWalletId = ids[0];
         const engine = providers[selectedWalletId];
-        const zeroEx = new ZeroEx(engine, configs);
-        const web3Wrapper = new Web3Wrapper(engine);
+        const zeroEx = new _0x_js_1.ZeroEx(engine, configs);
+        const web3Wrapper = new web3_wrapper_1.Web3Wrapper(engine);
         const accounts = yield web3Wrapper.getAvailableAddressesAsync();
         console.log('accounts: ', accounts);
-        const inputCurrencyInfo = getTokenInfoFromCurrencyCode(inputCurrencyCode, state);
+        const inputCurrencyInfo = utils_js_1.getTokenInfoFromCurrencyCode(inputCurrencyCode, state);
         if (!inputCurrencyInfo)
             console.log('DEX: Token contract address not found for input currency: ', inputCurrencyCode);
         const SELL_TOKEN_CONTRACT_ADDRESS = inputCurrencyInfo.address.toLowerCase();
         const SELL_TOKEN_DECIMALS = inputCurrencyInfo.decimal;
-        const buyTokenInfo = getTokenInfoFromCurrencyCode(outputCurrencyCode, state);
+        const buyTokenInfo = utils_js_1.getTokenInfoFromCurrencyCode(outputCurrencyCode, state);
         if (!buyTokenInfo)
             console.log('DEX: Token contract address not found for output currency: ', outputCurrencyCode);
         const BUY_TOKEN_CONTRACT_ADDRESS = buyTokenInfo.address.toLowerCase();
@@ -77,87 +79,87 @@ export const submitOrder = (order) => (dispatch, getState) => __awaiter(this, vo
         const EXCHANGE_CONTRACT_ADDRESS = zeroEx.exchange.getContractAddress();
         const makerAddress = accounts[0].toLowerCase();
         console.log('setMakerAllowTxHash');
-        dispatch(updateOrderFormButtonTitle(strings.setting_allowance));
+        dispatch(exports.updateOrderFormButtonTitle(default_js_1.default.setting_allowance));
         const setMakerAllowTxHash = yield zeroEx.token.setUnlimitedProxyAllowanceAsync(SELL_TOKEN_CONTRACT_ADDRESS, makerAddress);
         yield zeroEx.awaitTransactionMinedAsync(setMakerAllowTxHash);
         console.log('setMakerAllowTxHash has been set, hash is: ', setMakerAllowTxHash);
         // Generate feesRequest
         const feesRequest = {
             maker: makerAddress,
-            taker: ZeroEx.NULL_ADDRESS,
-            feeRecipient: RELAYER_ADDRESS,
+            taker: _0x_js_1.ZeroEx.NULL_ADDRESS,
+            feeRecipient: networkConstants_js_1.RELAYER_ADDRESS,
             makerTokenAddress: SELL_TOKEN_CONTRACT_ADDRESS,
             takerTokenAddress: BUY_TOKEN_CONTRACT_ADDRESS,
             exchangeContractAddress: EXCHANGE_CONTRACT_ADDRESS,
-            salt: ZeroEx.generatePseudoRandomSalt(),
-            makerTokenAmount: ZeroEx.toBaseUnitAmount(new BigNumber(inputAmount), SELL_TOKEN_DECIMALS),
-            takerTokenAmount: ZeroEx.toBaseUnitAmount(new BigNumber(outputAmount), BUY_TOKEN_DECIMALS),
-            expirationUnixTimestampSec: new BigNumber(Date.now() + 28800000) // When will the order expire (in unix time), Valid for up to 8 hours
+            salt: _0x_js_1.ZeroEx.generatePseudoRandomSalt(),
+            makerTokenAmount: _0x_js_1.ZeroEx.toBaseUnitAmount(new utils_1.BigNumber(inputAmount), SELL_TOKEN_DECIMALS),
+            takerTokenAmount: _0x_js_1.ZeroEx.toBaseUnitAmount(new utils_1.BigNumber(outputAmount), BUY_TOKEN_DECIMALS),
+            expirationUnixTimestampSec: new utils_1.BigNumber(Date.now() + 28800000) // When will the order expire (in unix time), Valid for up to 8 hours
         };
-        const relayerClient = new HttpClient(RELAYER_API_URL);
+        const relayerClient = new connect_1.HttpClient(networkConstants_js_1.RELAYER_API_URL);
         const feesResponse = yield relayerClient.getFeesAsync(feesRequest);
         console.log('feesResponse is: ', feesResponse);
         const order = Object.assign({}, feesRequest, feesResponse);
-        const orderHash = ZeroEx.getOrderHashHex(order);
+        const orderHash = _0x_js_1.ZeroEx.getOrderHashHex(order);
         const shouldAddPersonalMessagePrefix = false;
         const ecSignature = yield zeroEx.signOrderHashAsync(orderHash, makerAddress, shouldAddPersonalMessagePrefix);
         const signedOrder = Object.assign({ orderHash }, order, { ecSignature });
         yield relayerClient.submitOrderAsync(signedOrder);
         console.log('order submitted to relayer, signedOrder is: ', signedOrder);
-        dispatch(updateOrderFormFeedback(sprintf(strings.submit_order_success, orderHash), 'success'));
+        dispatch(exports.updateOrderFormFeedback(sprintf_js_1.sprintf(default_js_1.default.submit_order_success, orderHash), 'success'));
     }
     catch (e) {
         console.log('error: ', e);
-        dispatch(updateOrderFormFeedback(e.message, 'danger'));
+        dispatch(exports.updateOrderFormFeedback(e.message, 'danger'));
     }
-    dispatch(stopOrderFormProcessing());
+    dispatch(exports.stopOrderFormProcessing());
 });
-export const startOrderFormProcessing = () => {
+exports.startOrderFormProcessing = () => {
     return {
-        type: START_ORDER_FORM_PROCESSING
+        type: exports.START_ORDER_FORM_PROCESSING
     };
 };
-export const stopOrderFormProcessing = () => {
+exports.stopOrderFormProcessing = () => {
     return {
-        type: STOP_ORDER_FORM_PROCESSING
+        type: exports.STOP_ORDER_FORM_PROCESSING
     };
 };
-export const updateOrderFormButtonTitle = (orderFormProcessingButtonTitle) => {
+exports.updateOrderFormButtonTitle = (orderFormProcessingButtonTitle) => {
     return {
-        type: ORDER_FORM_BUTTON_TITLE,
+        type: exports.ORDER_FORM_BUTTON_TITLE,
         data: { orderFormProcessingButtonTitle }
     };
 };
-export const updateOrderFormFeedback = (message, type) => {
+exports.updateOrderFormFeedback = (message, type) => {
     return {
-        type: ORDER_FORM_FEEDBACK,
+        type: exports.ORDER_FORM_FEEDBACK,
         data: {
             message,
             type
         }
     };
 };
-export const fetchExchangeRates = () => (dispatch) => __awaiter(this, void 0, void 0, function* () {
+exports.fetchExchangeRates = () => (dispatch) => __awaiter(this, void 0, void 0, function* () {
     const response = yield fetch(SHAPESHIFT_RATE_ENDPOINT, { mode: 'cors' });
     const exchangeRates = yield response.json();
-    dispatch(updateShapeshiftExchangeRates(exchangeRates));
+    dispatch(exports.updateShapeshiftExchangeRates(exchangeRates));
 });
-export const updateShapeshiftExchangeRates = (shapeshiftExchangeRates) => (dispatch) => {
+exports.updateShapeshiftExchangeRates = (shapeshiftExchangeRates) => (dispatch) => {
     dispatch({
-        type: SHAPESHIFT_EXCHANGE_RATES,
+        type: exports.SHAPESHIFT_EXCHANGE_RATES,
         data: { shapeshiftExchangeRates }
     });
 };
-export const updateInputCurrencyCode = (inputCurrencyCode) => (dispatch, getState) => __awaiter(this, void 0, void 0, function* () {
+exports.updateInputCurrencyCode = (inputCurrencyCode) => (dispatch, getState) => __awaiter(this, void 0, void 0, function* () {
     const state = getState();
     const outputCurrencyCode = state.exchange.outputCurrencyCode;
     let inputCurrencyFiatRate = null;
     dispatch({
-        type: INPUT_CURRENCY_CODE,
+        type: exports.INPUT_CURRENCY_CODE,
         data: { inputCurrencyCode }
     });
     if (inputCurrencyCode && outputCurrencyCode)
-        dispatch(fetchDexOrderBook());
+        dispatch(exports.fetchDexOrderBook());
     const settingsIsoFiatCurrencyCode = state.settings.isoFiatCurrencyCode; // state.settings.fiatCurrencyCode
     const settingsFiatCurrencyCode = settingsIsoFiatCurrencyCode.replace('iso:', '');
     const url = `${CRYPTOCOMPARE_ENDPOINT}?fsym=${inputCurrencyCode}&tsyms=${settingsFiatCurrencyCode}`;
@@ -170,20 +172,20 @@ export const updateInputCurrencyCode = (inputCurrencyCode) => (dispatch, getStat
         inputCurrencyFiatRate = exchangeRateInfo[settingsFiatCurrencyCode];
     }
     dispatch({
-        type: INPUT_CURRENCY_FIAT_RATE,
+        type: exports.INPUT_CURRENCY_FIAT_RATE,
         data: { inputCurrencyFiatRate }
     });
 });
-export const updateOutputCurrencyCode = (outputCurrencyCode) => (dispatch, getState) => __awaiter(this, void 0, void 0, function* () {
+exports.updateOutputCurrencyCode = (outputCurrencyCode) => (dispatch, getState) => __awaiter(this, void 0, void 0, function* () {
     const state = getState();
     const inputCurrencyCode = state.exchange.inputCurrencyCode;
     let outputCurrencyFiatRate = null;
     dispatch({
-        type: OUTPUT_CURRENCY_CODE,
+        type: exports.OUTPUT_CURRENCY_CODE,
         data: { outputCurrencyCode }
     });
     if (inputCurrencyCode && outputCurrencyCode)
-        dispatch(fetchDexOrderBook());
+        dispatch(exports.fetchDexOrderBook());
     const settingsIsoFiatCurrencyCode = state.settings.isoFiatCurrencyCode; // state.settings.fiatCurrencyCode
     const settingsFiatCurrencyCode = settingsIsoFiatCurrencyCode.replace('iso:', '');
     const url = `${CRYPTOCOMPARE_ENDPOINT}?fsym=${outputCurrencyCode}&tsyms=${settingsFiatCurrencyCode}`;
@@ -196,11 +198,11 @@ export const updateOutputCurrencyCode = (outputCurrencyCode) => (dispatch, getSt
         outputCurrencyFiatRate = exchangeRateInfo[settingsFiatCurrencyCode];
     }
     dispatch({
-        type: OUTPUT_CURRENCY_FIAT_RATE,
+        type: exports.OUTPUT_CURRENCY_FIAT_RATE,
         data: { outputCurrencyFiatRate }
     });
 });
-export const fetchDexOrderBook = () => (dispatch, getState) => __awaiter(this, void 0, void 0, function* () {
+exports.fetchDexOrderBook = () => (dispatch, getState) => __awaiter(this, void 0, void 0, function* () {
     const state = getState();
     const tokenDirectory = state.tokens.tokensDirectory;
     const inputCurrencyCode = state.exchange.inputCurrencyCode;
@@ -215,7 +217,7 @@ export const fetchDexOrderBook = () => (dispatch, getState) => __awaiter(this, v
     if (!outputCurrencyInfo)
         console.log('DEX: Token contract address not found for ', outputCurrencyCode);
     const OUTPUT_CURRENCY_CONTRACT_ADDRESS = outputCurrencyInfo.address.toLowerCase();
-    const relayerClient = new HttpClient(RELAYER_API_URL);
+    const relayerClient = new connect_1.HttpClient(networkConstants_js_1.RELAYER_API_URL);
     console.log('DEX: Relayer client set');
     const orderBookRequest = {
         baseTokenAddress: OUTPUT_CURRENCY_CONTRACT_ADDRESS,
@@ -225,13 +227,14 @@ export const fetchDexOrderBook = () => (dispatch, getState) => __awaiter(this, v
     console.log('DEX: orderBookResponse is: ', orderBookResponse);
     dispatch(updateDexOrderBook(orderBookResponse));
 });
-export function updateDexOrderBook(orderBook) {
+function updateDexOrderBook(orderBook) {
     return {
-        type: ORDER_BOOK,
+        type: exports.ORDER_BOOK,
         data: orderBook
     };
 }
-export const selectOrder = (orderHash) => (dispatch, getState) => {
+exports.updateDexOrderBook = updateDexOrderBook;
+exports.selectOrder = (orderHash) => (dispatch, getState) => {
     const state = getState();
     if (!state.account)
         return;
@@ -241,20 +244,20 @@ export const selectOrder = (orderHash) => (dispatch, getState) => {
     if (!selectedOrder)
         selectedOrder = null;
     dispatch({
-        type: SELECTED_ORDER,
+        type: exports.SELECTED_ORDER,
         data: { selectedOrder }
     });
     if (selectedOrder)
-        dispatch(updateOrderBookModalVisibility(true));
+        dispatch(exports.updateOrderBookModalVisibility(true));
 };
-export const updateOrderBookModalVisibility = (isVisible) => {
+exports.updateOrderBookModalVisibility = (isVisible) => {
     return {
-        type: ORDER_BOOK_MODAL_VISIBILITY,
+        type: exports.ORDER_BOOK_MODAL_VISIBILITY,
         data: { isVisible }
     };
 };
-export const fillOrder = () => (dispatch, getState) => __awaiter(this, void 0, void 0, function* () {
-    dispatch(startFillOrderProcessing());
+exports.fillOrder = () => (dispatch, getState) => __awaiter(this, void 0, void 0, function* () {
+    dispatch(exports.startFillOrderProcessing());
     try {
         const state = getState();
         const ids = Object.getOwnPropertyNames(state.wallets);
@@ -263,12 +266,12 @@ export const fillOrder = () => (dispatch, getState) => __awaiter(this, void 0, v
         const TAKER_CONTRACT_ADDRESS = order.takerTokenAddress;
         let web3Engine = providers[selectedWalletId];
         if (!web3Engine)
-            web3Engine = startWeb3Engine(state);
-        const zeroEx = new ZeroEx(providers[selectedWalletId], configs);
-        const web3Wrapper = new Web3Wrapper(web3Engine);
+            web3Engine = exports.startWeb3Engine(state);
+        const zeroEx = new _0x_js_1.ZeroEx(providers[selectedWalletId], configs);
+        const web3Wrapper = new web3_wrapper_1.Web3Wrapper(web3Engine);
         const accounts = yield web3Wrapper.getAvailableAddressesAsync();
         const takerAddress = accounts[0].toLowerCase(); // own address
-        dispatch(updateFillOrderButtonTitle(strings.setting_allowance));
+        dispatch(exports.updateFillOrderButtonTitle(default_js_1.default.setting_allowance));
         const allowanceAmount = yield zeroEx.token.getProxyAllowanceAsync(TAKER_CONTRACT_ADDRESS, takerAddress);
         console.log('DEX: allowanceAmount is: ', allowanceAmount);
         if (allowanceAmount.lt(order.takerTokenAmount)) {
@@ -280,11 +283,11 @@ export const fillOrder = () => (dispatch, getState) => __awaiter(this, void 0, v
         // may need something more graceful than just setting to unlimited...
         const setZrxAllowTxHash = yield zeroEx.token.setUnlimitedProxyAllowanceAsync(ZRX_TOKEN_ADDRESS, takerAddress);
         yield zeroEx.awaitTransactionMinedAsync(setZrxAllowTxHash);
-        const orderHash = ZeroEx.getOrderHashHex(order);
+        const orderHash = _0x_js_1.ZeroEx.getOrderHashHex(order);
         console.log('DEX: orderHash is: ', orderHash);
         // Signing orderHash -> ecSignature
         const shouldAddPersonalMessagePrefix = false;
-        dispatch(updateFillOrderButtonTitle(strings.signing));
+        dispatch(exports.updateFillOrderButtonTitle(default_js_1.default.signing));
         const ecSignature = yield zeroEx.signOrderHashAsync(orderHash, takerAddress, shouldAddPersonalMessagePrefix);
         console.log('DEX: ecSignature is: ', ecSignature);
         const signedOrder = Object.assign({}, order);
@@ -295,29 +298,30 @@ export const fillOrder = () => (dispatch, getState) => __awaiter(this, void 0, v
         console.log('DEX: about to fill order');
         const fillTxHash = yield zeroEx.exchange.fillOrderAsync(signedOrder, order.takerTokenAmount, shouldThrowOnInsufficientBalanceOrAllowance, takerAddress);
         console.log('DEX: fillTxHash is: ', fillTxHash);
-        dispatch(updateFillOrderButtonTitle(strings.mining_transaction));
+        dispatch(exports.updateFillOrderButtonTitle(default_js_1.default.mining_transaction));
         const txReceipt = yield zeroEx.awaitTransactionMinedAsync(fillTxHash);
         console.log('DEX: order fulfillment transaction completed!, txReceipt is: ', txReceipt);
-        dispatch(updateOrderBookModalVisibility(false));
+        dispatch(exports.updateOrderBookModalVisibility(false));
     }
     catch (e) {
         console.log('DEX Order Fill error', e);
     }
-    dispatch(stopFillOrderProcessing());
+    dispatch(exports.stopFillOrderProcessing());
 });
-export const startFillOrderProcessing = () => {
+exports.startFillOrderProcessing = () => {
     return {
-        type: START_FILL_ORDER_PROCESSING
+        type: exports.START_FILL_ORDER_PROCESSING
     };
 };
-export const stopFillOrderProcessing = () => {
+exports.stopFillOrderProcessing = () => {
     return {
-        type: STOP_FILL_ORDER_PROCESSING
+        type: exports.STOP_FILL_ORDER_PROCESSING
     };
 };
-export const updateFillOrderButtonTitle = (fillOrderProcessingButtonTitle) => {
+exports.updateFillOrderButtonTitle = (fillOrderProcessingButtonTitle) => {
     return {
-        type: FILL_ORDER_BUTTON_TITLE,
+        type: exports.FILL_ORDER_BUTTON_TITLE,
         data: { fillOrderProcessingButtonTitle }
     };
 };
+//# sourceMappingURL=exchangeActions.js.map

@@ -1,11 +1,14 @@
-import { ACCOUNT, DESTROY_ACCOUNT } from '../actions/accountActions.js';
-export const account = (state = null, action) => {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const accountActions_js_1 = require("../actions/accountActions.js");
+exports.account = (state = null, action) => {
     switch (action.type) {
-        case ACCOUNT:
+        case accountActions_js_1.ACCOUNT:
             return action.data.account;
-        case DESTROY_ACCOUNT:
+        case accountActions_js_1.DESTROY_ACCOUNT:
             return null;
         default:
             return state;
     }
 };
+//# sourceMappingURL=accountReducer.js.map

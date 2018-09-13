@@ -1,6 +1,8 @@
-import React, { PureComponent } from 'react';
-import { connect } from 'react-redux';
-class MainWrapper extends PureComponent {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = require("react");
+const react_redux_1 = require("react-redux");
+class MainWrapper extends react_1.PureComponent {
     render() {
         const theme = this.props.theme.className;
         return (<div className={theme}>
@@ -10,7 +12,8 @@ class MainWrapper extends PureComponent {
       </div>);
     }
 }
-export default connect(state => {
+exports.default = react_redux_1.connect(state => {
     return { theme: state.theme,
         sidebar: state.sidebar };
 })(MainWrapper);
+//# sourceMappingURL=MainWrapper.js.map

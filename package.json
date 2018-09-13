@@ -5,10 +5,13 @@
   "homepage": "http://CaptainsRelay.com",
   "dependencies": {
     "0x.js": "0.36.3",
-    "@0xproject/connect": "^1.0.4",
+    "@0xproject/connect": "^0.6.10",
+    "@0xproject/tslint-config": "^0.4.16",
     "@0xproject/subproviders": "^1.0.4",
     "@0xproject/utils": "^0.5.2",
     "@material-ui/core": "^1.4.0",
+    "@types/jss": "^9.5.5",
+    "@types/web3": "^1.0.4",
     "autoprefixer": "7.1.6",
     "babel-core": "6.26.0",
     "babel-eslint": "7.2.3",
@@ -69,7 +72,7 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
-    "electron-dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3007 && electron .\""    
+    "electron-dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3007 && electron .\""
   },
   "main": "public/electron.js",
   "devDependencies": {

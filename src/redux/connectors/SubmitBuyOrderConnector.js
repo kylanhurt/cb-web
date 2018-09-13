@@ -28,8 +28,8 @@ const mapDispatchToProps = (dispatch) => {
     submitOrder: (order) => dispatch(submitOrder(order)),
     fetchTokenList: () => dispatch(fetchTokenList()),
     fetchExchangeRates: () => dispatch(fetchExchangeRates()),
-    updateInputCurrencyCode: (currencyCode: string) => dispatch(updateInputCurrencyCode(currencyCode)),
-    updateOutputCurrencyCode: (currencyCode: string) => dispatch(updateOutputCurrencyCode(currencyCode))
+    updateInputCurrencyCode: (currencyCode) => dispatch(updateInputCurrencyCode(currencyCode)),
+    updateOutputCurrencyCode: (currencyCode) => dispatch(updateOutputCurrencyCode(currencyCode))
   }
 }
 

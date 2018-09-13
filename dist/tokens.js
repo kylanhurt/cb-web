@@ -1,4 +1,6 @@
-export default [
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = [
     {
         'address': '0x4E84E9e5fb0A972628Cf4568c403167EF1D40431',
         'symbol': '$FFC',
@@ -4338,3 +4340,4 @@ export default [
         'type': 'default'
     }
 ];
+//# sourceMappingURL=tokens.js.map

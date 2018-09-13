@@ -1,6 +1,8 @@
-export const TOKENS_DIRECTORY = 'TOKENS_DIRECTORY';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TOKENS_DIRECTORY = 'TOKENS_DIRECTORY';
 const tokenDirectoryUrl = 'https://raw.githubusercontent.com/kvhnuke/etherwallet/mercury/app/scripts/tokens/ethTokens.json';
-export const fetchTokenList = () => (dispatch, getState) => {
+exports.fetchTokenList = () => (dispatch, getState) => {
     // will need to get API keys for GitHub
     fetch(tokenDirectoryUrl)
         .then(response => response.json())
@@ -8,9 +10,11 @@ export const fetchTokenList = () => (dispatch, getState) => {
         dispatch(updateTokensDirectory(tokensDirectory));
     });
 };
-export function updateTokensDirectory(tokensDirectory) {
+function updateTokensDirectory(tokensDirectory) {
     return {
-        type: TOKENS_DIRECTORY,
+        type: exports.TOKENS_DIRECTORY,
         data: { tokensDirectory }
     };
 }
+exports.updateTokensDirectory = updateTokensDirectory;
+//# sourceMappingURL=tokenActions.js.map

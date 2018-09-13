@@ -1,11 +1,13 @@
-import { connect } from 'react-redux';
-import { updateOrderBookModalVisibility, fillOrder } from '../actions/exchangeActions';
-import { OrderBookModalComponent } from '../../containers/OrderBook/components/OrderBookModal.js';
-import { getTokenInfoFromAddress } from '../../utils/utils.js';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_redux_1 = require("react-redux");
+const exchangeActions_1 = require("../actions/exchangeActions");
+const OrderBookModal_js_1 = require("../../containers/OrderBook/components/OrderBookModal.js");
+const utils_js_1 = require("../../utils/utils.js");
 const mapStateToProps = (state) => {
     const selectedOrder = state.exchange.selectedOrder;
-    const inputCurrencyInfo = getTokenInfoFromAddress(selectedOrder.takerTokenAddress, state);
-    const outputCurrencyInfo = getTokenInfoFromAddress(selectedOrder.makerTokenAddress, state);
+    const inputCurrencyInfo = utils_js_1.getTokenInfoFromAddress(selectedOrder.takerTokenAddress, state);
+    const outputCurrencyInfo = utils_js_1.getTokenInfoFromAddress(selectedOrder.makerTokenAddress, state);
     return {
         selectedOrder,
         inputCurrencyInfo,
@@ -19,8 +21,9 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
     return {
-        updateOrderBookModalVisibility: (isVisible) => dispatch(updateOrderBookModalVisibility(isVisible)),
-        fillOrder: () => dispatch(fillOrder())
+        updateOrderBookModalVisibility: (isVisible) => dispatch(exchangeActions_1.updateOrderBookModalVisibility(isVisible)),
+        fillOrder: () => dispatch(exchangeActions_1.fillOrder())
     };
 };
-export const OrderBookModalConnector = connect(mapStateToProps, mapDispatchToProps)(OrderBookModalComponent);
+exports.OrderBookModalConnector = react_redux_1.connect(mapStateToProps, mapDispatchToProps)(OrderBookModal_js_1.OrderBookModalComponent);
+//# sourceMappingURL=OrderBookModalConnector.js.map
