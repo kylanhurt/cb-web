@@ -1,0 +1,222 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SubmitBuyOrder component initally renders accurately 1`] = `
+<div>
+  <div
+    className="card__title"
+  >
+    <h5
+      className="bold-text"
+    >
+      Choose trading pairs:
+    </h5>
+  </div>
+  <form
+    className="form form--horizontal"
+    onSubmit={[Function]}
+  >
+    <div
+      className="form__form-group form-row"
+    >
+      <div
+        className="col-3 form__form-group-label-wrap"
+      >
+        <label
+          className="form__form-group-label"
+          htmlFor="inputCurrencyCode"
+        >
+          Token to Sell:
+        </label>
+      </div>
+      <div
+        className="col-7"
+      >
+        <select
+          className="form-control"
+          onChange={[Function]}
+          value="WETH"
+        >
+          <option
+            value={null}
+          >
+            ----
+          </option>
+          <option
+            value="ZRX"
+          >
+            ZRX
+             | 
+            0xe41d2489...1f4699f498
+          </option>
+          <option
+            value="WETH"
+          >
+            WETH
+             | 
+            0xc02aaa39...083c756cc2
+          </option>
+        </select>
+      </div>
+      <div
+        className="col-2 form__form-group-label-wrap post"
+      >
+        <span
+          className="form__form-group-label"
+        >
+          ~ $ 300
+        </span>
+      </div>
+    </div>
+    <div
+      className="form__form-group form-row"
+    >
+      <div
+        className="col-3 form__form-group-label-wrap"
+      >
+        <label
+          className="form__form-group-label"
+          htmlFor="inputCurrencyAmount"
+        >
+          Amount to Sell:
+        </label>
+      </div>
+      <div
+        className="col-7"
+      >
+        <input
+          className="form-control"
+          onChange={[Function]}
+          placeholde="0"
+          step="0.000000000000000001"
+          type="number"
+        />
+      </div>
+      <div
+        className="col-2 form__form-group-label-wrap post"
+      >
+        <span
+          className="form__form-group-label"
+        >
+          
+        </span>
+      </div>
+    </div>
+    <div
+      className="form__form-group form-row"
+    >
+      <div
+        className="col-3 form__form-group-label-wrap"
+      >
+        <label
+          className="form__form-group-label"
+          htmlFor="outputCurrencyCode"
+        >
+          Token to Buy:
+        </label>
+      </div>
+      <div
+        className="col-7"
+      >
+        <select
+          className="form-control"
+          onChange={[Function]}
+          value="ZRX"
+        >
+          <option
+            value={null}
+          >
+            ----
+          </option>
+          <option
+            value="ZRX"
+          >
+            ZRX
+             | 
+            0xe41d2489...1f4699f498
+          </option>
+          <option
+            value="WETH"
+          >
+            WETH
+             | 
+            0xc02aaa39...083c756cc2
+          </option>
+        </select>
+      </div>
+      <div
+        className="col-2 form__form-group-label-wrap post"
+      >
+        <span
+          className="form__form-group-label"
+        >
+          ~ $ 0.7
+        </span>
+      </div>
+    </div>
+    <div
+      className="form__form-group form-row"
+    >
+      <div
+        className="col-3 form__form-group-label-wrap"
+      >
+        <label
+          className="form__form-group-label"
+          htmlFor="outputCurrencyAmount"
+        >
+          Amount to Buy:
+        </label>
+      </div>
+      <div
+        className="col-7"
+      >
+        <input
+          className="form-control"
+          onChange={[Function]}
+          placeholde="0"
+          step="0.000000000000000001"
+          type="number"
+        />
+      </div>
+      <div
+        className="col-2 form__form-group-label-wrap post"
+      >
+        <span
+          className="form__form-group-label"
+        >
+          
+        </span>
+      </div>
+    </div>
+    <div
+      className="feedback-area alert  form-row"
+    />
+    <div
+      className="centered-form-buttons form-row"
+    >
+      <button
+        className="btn btn-secondary btn-lg"
+        style={
+          Object {
+            "width": 200,
+          }
+        }
+        type="button"
+      >
+        Clear
+      </button>
+      <button
+        className="btn btn-primary btn-lg"
+        disabled={true}
+        style={
+          Object {
+            "width": 200,
+          }
+        }
+        type="submit"
+      >
+        Submit
+      </button>
+    </div>
+  </form>
+</div>
+`;
