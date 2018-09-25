@@ -1,1 +1,0 @@
-{"version":3,"file":"settingsReducer.js","sourceRoot":"","sources":["../../../src/redux/reducers/settingsReducer.js"],"names":[],"mappings":";;AAAA,iCAAuC;AAE1B,QAAA,mBAAmB,GAAG,CAAC,KAAK,GAAG,KAAK,EAAE,MAAM,EAAE,EAAE;IAC3D,QAAQ,MAAM,CAAC,IAAI,EAAE;QACnB;YACE,OAAO,KAAK,CAAA;KACf;AACH,CAAC,CAAA;AAEY,QAAA,QAAQ,GAAG,uBAAe,CAAC;IACtC,mBAAmB,EAAnB,2BAAmB;CACpB,CAAC,CAAA"}

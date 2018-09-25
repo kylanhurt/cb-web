@@ -1,1 +1,0 @@
-{"version":3,"file":"sidebarActions.js","sourceRoot":"","sources":["../../../src/redux/actions/sidebarActions.js"],"names":[],"mappings":";;AAAa,QAAA,yBAAyB,GAAG,2BAA2B,CAAA;AACvD,QAAA,gCAAgC,GAAG,kCAAkC,CAAA;AAElF,SAAgB,uBAAuB;IACrC,OAAO;QACL,IAAI,EAAE,iCAAyB;KAChC,CAAA;AACH,CAAC;AAJD,0DAIC;AAED,SAAgB,6BAA6B;IAC3C,OAAO;QACL,IAAI,EAAE,wCAAgC;KACvC,CAAA;AACH,CAAC;AAJD,sEAIC"}
